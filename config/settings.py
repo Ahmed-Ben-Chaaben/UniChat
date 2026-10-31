@@ -57,13 +57,9 @@ RERANKER_MODEL = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
 
 
 
-LLM_MODEL_CLOUD="gemma4:31b"
-OLLAMA_CLOUD_HOST="https://ollama.com"
-OLLAMA_CLOUD_API_KEY="***REMOVED***"
 
-# LLM via Ollama
-# OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-# LLM_MODEL = os.getenv("LLM_MODEL", "qwen2.5-coder:7b")
+
+
 
 # Réglages performance LLM (cruciaux sur CPU / RAM limitée)
 LLM_KEEP_ALIVE = os.getenv("LLM_KEEP_ALIVE", "30m")   # garde le modèle chargé
