@@ -1,0 +1,105 @@
+# ============================================
+# Secrets & variables d'environnement
+# ============================================
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.json
+config/secrets.py
+config/local_settings.py
+
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environnements virtuels
+.venv/
+venv/
+ENV/
+env/
+(Unichat)/
+
+# Tests & coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# ============================================
+# Jupyter Notebook
+# ============================================
+.ipynb_checkpoints/
+
+# ============================================
+# Logs & données locales
+# ============================================
+*.log
+logs/
+data/
+datasets/
+models/
+checkpoints/
+*.sqlite3
+*.db
+db.sqlite3
+
+# ============================================
+# IDE / Éditeurs
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ============================================
+# Système d'exploitation
+# ============================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================
+# Streamlit / Gradio / caches ML
+# ============================================
+.streamlit/secrets.toml
+.cache/
+*.pkl
+*.h5
+*.pt
+*.onnx
+
+# ============================================
+# Fichiers temporaires
+# ============================================
+*.tmp
+*.bak
+*.orig
