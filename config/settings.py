@@ -56,9 +56,6 @@ RERANKER_MODEL = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
 
 
 
-COHERE_API_KEY="***REMOVED***"
-COHERE_EMBEDDING_MODEL="embed-multilingual-v3.0"
-COHERE_RERANK_MODEL="rerank-multilingual-v3.0"
 
 LLM_MODEL_CLOUD="gemma4:31b"
 OLLAMA_CLOUD_HOST="https://ollama.com"
