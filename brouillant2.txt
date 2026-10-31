@@ -1,0 +1,56 @@
+quel est l'aalbum la plus chers du 1er artiste
+
+Quelle métrique spécifique cherchez-vous à connaître pour l'album le plus chers du premier artiste ?
+
+le plus vendu
+
+Quelle métrique spécifique cherchez-vous à obtenir concernant l'album le plus chers du premier artiste (le plus vendu) ?
+
+Je veux la quantité totale vendue.
+
+Quel est l'album le plus cher vendu par le premier artiste (le plus vendu) et quel est la quantité totale vendue de cet album ?
+
+oui
+
+Quelle est la quantité totale vendue du premier artiste le plus vendu ?
+
+oui
+
+Quel est l'album le plus cher vendu par le premier artiste, et combien a-t-il été vendu ?
+
+
+##Commandes
+install:
+
+pip install -r requirements.txt
+bash scripts/02_start_qdrant.sh
+bash scripts/03_pull_llm.sh
+bash scripts/01_download_chinook.sh
+
+
+run:
+
+docker run -d --name bi_qdrant -p 6333:6333 -p 6334:6334 -v %cd%/qdrant_storage:/qdrant/storage qdrant/qdrant
+ollama pull qwen2.5-coder:7b
+streamlit run app.py
+
+
+pour voir tous les variable d'environnements: env
+
+pour voir  un variable d'environnement spécifique :echo $USE_RERANKER
+
+pour voir si le reranker actif :
+$ python -c "from config import settings; print('RERANKER =', settings.USE_RERANKER); print('FUSED =', settings.FUSED_ANALYSIS); print('MODEL =', settings.LLM_MODEL)"
+
+test:
+pip install pytest pytest-cov
+pytest
+
+# Run with verbose output
+pytest -v
+
+# Run with coverage report
+pytest --cov=core --cov=knowledge
+
+
+export DB_URL='mysql+pymysql://root:benchahmed123A!@localhost:3306/testdb_datawarehouse'

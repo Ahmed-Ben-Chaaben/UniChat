@@ -1,0 +1,112 @@
+========================================================================
+TRAÇAGE DU RETRIEVAL — comment le programme extrait les données
+========================================================================
+Question : Quelle est la quantité totale livrée pour la commande CMD0005 ?
+Paramètres : coarse_k=30 (candidats/méthode), fine_k=16 (gardés)
+Reranker actif : False
+
+── ÉTAPE 1 — MOTS-CLÉS EXTRAITS (tokenisation) ──
+  ['quelle', 'est', 'la', 'quantité', 'totale', 'livrée', 'pour', 'la', 'commande', 'cmd0005', '?']
+  (11 tokens : minuscules, '.' et '|' remplacés par espaces)
+
+── ÉTAPE 2 — RECHERCHE VECTORIELLE (similarité sémantique bge-m3) ──
+  Vecteur question : dimension 1024 (bge-m3)
+  Top 30 par similarité sémantique :
+     1. [Task   ] Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?   (score=0.4665)
+     2. [Task   ] Quels clients ont un montant moyen de facture superieur a 5000 TND ?   (score=0.4643)
+     3. [Task   ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?   (score=0.4582)
+     4. [Term   ] Commande client   (score=0.4400)
+     5. [Task   ] Quel est le montant total facture par commande ?   (score=0.4208)
+     6. [Task   ] Quelles lignes de commande ont un ecart entre quantite commandee et quantite livree ?   (score=0.4124)
+     7. [Column ] FACT_Commande_Client.Total_Quantite_Livree   (score=0.4059)
+     8. [Table  ] FACT_Commande_Client   (score=0.4016)
+     9. [Task   ] Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?   (score=0.3971)
+    10. [Task   ] Quel est le lot vendu pour la facture 'FAC0010' ?   (score=0.3921)
+    11. [Table  ] FACT_Ordre_Achat   (score=0.3900)
+    12. [Term   ] Agregat de commande   (score=0.3873)
+    13. [Column ] FACT_Commande_Client.Total_Quantite_Retournee   (score=0.3843)
+    14. [Task   ] Quelle est la duree totale d'arret de production par machine ?   (score=0.3807)
+    15. [Column ] FACT_Commande_Client.Total_Montant_Livree   (score=0.3801)
+    16. [Task   ] Quelles sont les operations de la gamme 'GAM0001', triees par temps d'execution ?   (score=0.3791)
+    17. [Task   ] Quel est le nombre de bons de livraison par site ?   (score=0.3748)
+    18. [Column ] FACT_Commande_Client.Total_Quantite_Facturee   (score=0.3722)
+    19. [Term   ] Ordre d'achat   (score=0.3709)
+    20. [Task   ] Quel est le CA total par client ?   (score=0.3707)
+    21. [Task   ] Quelles sont les unites de production disponibles ?   (score=0.3705)
+    22. [Table  ] FACT_PROD_Consommation   (score=0.3705)
+    23. [Table  ] DIM_Fournisseur   (score=0.3673)
+    24. [Column ] AGG_Commande.Quantite_livree   (score=0.3667)
+    25. [Table  ] DIM_Centre_Charge   (score=0.3658)
+    26. [Column ] FACT_Commande_Client.Total_Montant_Retour   (score=0.3647)
+    27. [Task   ] Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?   (score=0.3645)
+    28. [Task   ] Quel est le delai moyen en jours entre commande et reception fournisseur ?   (score=0.3632)
+    29. [Task   ] Quel est le montant total impaye par client ?   (score=0.3623)
+    30. [Term   ] Bon de livraison   (score=0.3616)
+
+── ÉTAPE 3 — RECHERCHE LEXICALE (BM25, correspondance de mots) ──
+  Top 30 par score BM25 :
+     1. [Task   ] Quelle est la duree totale d'arret de production par machine ?   (bm25=18.389)
+     2. [Task   ] Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?   (bm25=17.524)
+     3. [Task   ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?   (bm25=17.524)
+     4. [Task   ] Quelle est la capacite machine de chaque departement ?   (bm25=15.437)
+     5. [Task   ] Quel est le lot vendu pour la facture 'FAC0010' ?   (bm25=14.970)
+     6. [Task   ] Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?   (bm25=14.474)
+     7. [Task   ] Quelle est la composition (nomenclature) de l'article 'NOM0001' ?   (bm25=14.382)
+     8. [Task   ] Quelle est la periode de validite de chaque unite de production par article ?   (bm25=13.125)
+     9. [Task   ] Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?   (bm25=12.963)
+    10. [Task   ] Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?   (bm25=12.211)
+    11. [Task   ] Quelle est la ville et le pays de chaque client ?   (bm25=12.071)
+    12. [Column ] FACT_Vente.Quantité   (bm25=12.067)
+    13. [Task   ] Quel est le montant total facture par commande ?   (bm25=11.021)
+    14. [Task   ] Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?   (bm25=10.240)
+    15. [Task   ] Quel est le chiffre d'affaires par mois pour l'annee 2025 ?   (bm25=10.032)
+    16. [Term   ] Statut de commande   (bm25=8.629)
+    17. [Task   ] Quels sont les statuts de commande possibles ?   (bm25=8.484)
+    18. [Task   ] Quel est le delai moyen en jours entre commande et reception fournisseur ?   (bm25=8.298)
+    19. [Term   ] Validite d'une unite de production   (bm25=7.874)
+    20. [Term   ] Commande client   (bm25=7.301)
+    21. [Task   ] Quels clients n'ont jamais passe de commande ?   (bm25=6.749)
+    22. [Task   ] Quelles lignes de commande ont un ecart entre quantite commandee et quantite livree ?   (bm25=6.669)
+    23. [Task   ] Combien de clients sont enregistres dans la base ?   (bm25=6.402)
+    24. [Task   ] Quel est le chiffre d'affaires total en TND ?   (bm25=6.391)
+    25. [Task   ] Quels clients appartiennent a la classe 'VIP' ?   (bm25=6.311)
+    26. [Task   ] Quel est le taux de change actuel de l'euro ?   (bm25=6.042)
+    27. [Task   ] Quel est le stock disponible total par site ?   (bm25=6.042)
+    28. [Term   ] Chiffre d'affaires (CA)   (bm25=6.010)
+    29. [Task   ] Quel est le CA total par client ?   (bm25=5.881)
+    30. [Task   ] Quel est le prix de vente moyen par type d'article ?   (bm25=5.728)
+
+── ÉTAPE 4 — FUSION (union vectoriel + lexical) ──
+  51 candidats uniques après fusion
+  - présents dans LES DEUX méthodes : ['Commande client', 'Quel est le CA total par client ?', 'Quel est le delai moyen en jours entre commande et reception fournisseur ?', "Quel est le lot vendu pour la facture 'FAC0010' ?", 'Quel est le montant total facture par commande ?', 'Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?', "Quelle est la duree totale d'arret de production par machine ?", "Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?", 'Quelles lignes de commande ont un ecart entre quantite commandee et quantite livree ?']
+  - vectoriel seulement : ['AGG_Commande.Quantite_livree', 'Agregat de commande', 'Bon de livraison', 'DIM_Centre_Charge', 'DIM_Fournisseur', 'FACT_Commande_Client', 'FACT_Commande_Client.Total_Montant_Livree', 'FACT_Commande_Client.Total_Montant_Retour', 'FACT_Commande_Client.Total_Quantite_Facturee', 'FACT_Commande_Client.Total_Quantite_Livree', 'FACT_Commande_Client.Total_Quantite_Retournee', 'FACT_Ordre_Achat', 'FACT_PROD_Consommation', "Ordre d'achat", "Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?", 'Quel est le montant total impaye par client ?', 'Quel est le nombre de bons de livraison par site ?', "Quelles sont les operations de la gamme 'GAM0001', triees par temps d'execution ?", 'Quelles sont les unites de production disponibles ?', 'Quels clients ont un montant moyen de facture superieur a 5000 TND ?', 'Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?']
+  - BM25 seulement      : ["Chiffre d'affaires (CA)", 'Combien de clients sont enregistres dans la base ?', 'FACT_Vente.Quantité', "Quel est le chiffre d'affaires par mois pour l'annee 2025 ?", "Quel est le chiffre d'affaires total en TND ?", "Quel est le prix de vente moyen par type d'article ?", 'Quel est le stock disponible total par site ?', "Quel est le taux de change actuel de l'euro ?", 'Quelle est la capacite machine de chaque departement ?', "Quelle est la composition (nomenclature) de l'article 'NOM0001' ?", "Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?", 'Quelle est la periode de validite de chaque unite de production par article ?', 'Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?', "Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?", "Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?", 'Quelle est la ville et le pays de chaque client ?', "Quels clients appartiennent a la classe 'VIP' ?", "Quels clients n'ont jamais passe de commande ?", 'Quels sont les statuts de commande possibles ?', 'Statut de commande', "Validite d'une unite de production"]
+
+── ÉTAPE 5 — MULTI-HOP (traversée des ancêtres via anc_name) ──
+  54 candidats après multi-hop (+3 ancêtres)
+    + AGG_Commande ⟵ Database Chinook
+    + Chinook
+    + FACT_Vente ⟵ Database Chinook
+
+── ÉTAPE 6 — CLASSEMENT FINAL ──
+  16 entrées retenues (fine_k=16) :
+     1. Task Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?
+     2. Task Quelle est la duree totale d'arret de production par machine ?
+     3. Task Quel est le lot vendu pour la facture 'FAC0010' ?
+     4. Task Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?
+     5. Task Quel est le montant total facture par commande ?
+     6. Task Quels clients ont un montant moyen de facture superieur a 5000 TND ?
+     7. Task Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?
+     8. Term Commande client
+     9. Task Quelle est la capacite machine de chaque departement ?
+    10. Task Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?
+    11. Task Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?
+    12. Task Quelle est la composition (nomenclature) de l'article 'NOM0001' ?
+    13. Task Quelle est la periode de validite de chaque unite de production par article ?
+    14. Task Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?
+    15. Task Quelles lignes de commande ont un ecart entre quantite commandee et quantite livree ?
+    16. Task Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?
+
+── SYNTHÈSE : tables & colonnes comprises au final ──
+  Tables  : (aucune)
+  Colonnes: (aucune)

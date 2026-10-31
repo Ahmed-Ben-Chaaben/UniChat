@@ -1,0 +1,1507 @@
+======================================================================
+EXPORT DU SCHÉMA INDEXÉ — vérification de ce que le système a compris
+======================================================================
+Généré le      : 2026-08-03T13:05:08
+Base           : mssql+pyodbc:///?odbc_connect=Driver%3DODBC+Driver+17+for+SQL+Server%3BServer%3DPORTABLE-HP-21%5CSQLEXPRESS%3BDatabase%3DTestDB_DataWarehouse%3BTrusted_Connection%3Dyes%3BTrustServerCertificate%3Dyes%3B
+SGBD (dialect) : mssql
+Nb de tables   : 53
+
+── SCHÉMA COMPLET (ce qui est passé au LLM pour générer le SQL) ──
+
+Table AGG_Commande(Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Quantite_Commandee DECIMAL(18, 2), Quantite_Retournee DECIMAL(18, 2), Montant_Livree DECIMAL(18, 2), Annee INTEGER, Mois INTEGER, Quantite_facturee DECIMAL(18, 2), Quantite_livree DECIMAL(18, 2), Montant_Commande DECIMAL(18, 2), Montant_facturee DECIMAL(18, 2), Montant_Retournee DECIMAL(18, 2))
+Table AGG_Recouvrement_Client(Annee INTEGER, Mois INTEGER, Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Creance_Client DECIMAL(18, 2), Total_Recouvrement DECIMAL(18, 2), En_Cours_Client DECIMAL(18, 2), Total_Impaye DECIMAL(18, 2), CA_TTC DECIMAL(18, 2))
+  FK AGG_Recouvrement_Client.Code_Client -> DIM_Client.Code_Client
+Table AUDIT_Acces_Donnees(AccesId BIGINT, InteractionId BIGINT, NomTable NVARCHAR(128) COLLATE "French_CI_AS", StatutAcces NVARCHAR(20) COLLATE "French_CI_AS")
+  FK AUDIT_Acces_Donnees.InteractionId -> AUDIT_Interaction.InteractionId
+Table AUDIT_Interaction(InteractionId BIGINT, SessionId UNIQUEIDENTIFIER, UserId INTEGER, RoleId INTEGER, DateHeure DATETIME2, Question NVARCHAR COLLATE "French_CI_AS", SqlGenere NVARCHAR COLLATE "French_CI_AS", TablesDemandees NVARCHAR COLLATE "French_CI_AS", StatutExecution NVARCHAR(20) COLLATE "French_CI_AS", MessageErreur NVARCHAR COLLATE "French_CI_AS", ReponseAssistant NVARCHAR COLLATE "French_CI_AS", NbLignesRetournees INTEGER, DureeExecutionMs INTEGER, DureeTotaleMs INTEGER, ModeleLLM NVARCHAR(100) COLLATE "French_CI_AS", Feedback TINYINT, CommentaireFeedback NVARCHAR COLLATE "French_CI_AS", AdresseIP NVARCHAR(50) COLLATE "French_CI_AS")
+  FK AUDIT_Interaction.RoleId -> SEC_Role.RoleId
+  FK AUDIT_Interaction.SessionId -> AUDIT_Session.SessionId
+  FK AUDIT_Interaction.UserId -> SEC_Utilisateur.UserId
+Table AUDIT_Session(SessionId UNIQUEIDENTIFIER, UserId INTEGER, RoleId INTEGER, DateDebut DATETIME2, DateFin DATETIME2, Canal NVARCHAR(50) COLLATE "French_CI_AS", AdresseIP NVARCHAR(50) COLLATE "French_CI_AS")
+  FK AUDIT_Session.RoleId -> SEC_Role.RoleId
+  FK AUDIT_Session.UserId -> SEC_Utilisateur.UserId
+Table DIM_Article(Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(161) COLLATE "French_CI_AS", Unite_Mesure NVARCHAR(30) COLLATE "French_CI_AS", Ligne_Produit NVARCHAR(30) COLLATE "French_CI_AS", Ligne_Produit_Description NVARCHAR(80) COLLATE "French_CI_AS", Type_Article NVARCHAR(80) COLLATE "French_CI_AS", Machine NVARCHAR(80) COLLATE "French_CI_AS", Status NVARCHAR(80) COLLATE "French_CI_AS", Unite_Production NVARCHAR(80) COLLATE "French_CI_AS", Famille_Article NVARCHAR(10) COLLATE "French_CI_AS", Group_Promo NVARCHAR(80) COLLATE "French_CI_AS", Article_Client_PCT NVARCHAR(30) COLLATE "French_CI_AS", Prix_Vente NVARCHAR(30) COLLATE "French_CI_AS", AMM NVARCHAR(50) COLLATE "French_CI_AS")
+Table DIM_Centre_Charge(Code_centre_charge NVARCHAR(80) COLLATE "French_CI_AS", Centre_charge NVARCHAR(80) COLLATE "French_CI_AS", Machine NVARCHAR(80) COLLATE "French_CI_AS", Description NVARCHAR(80) COLLATE "French_CI_AS", Departement NVARCHAR(80) COLLATE "French_CI_AS", Date_Changement DATE, Machine_Centre DECIMAL(18, 2), Machie_Operation DECIMAL(18, 2), Taux_FGV_MO DECIMAL(18, 2), Taux_Machine_FGV DECIMAL(18, 2), Taux_Machine_Reg DECIMAL(18, 2), Taux_MO DECIMAL(18, 2), Taux_Reglage DECIMAL(18, 2), Taux_Réglage_FGV DECIMAL(18, 2), Taux_Rendement DECIMAL(18, 2), Taux_Utilisation DECIMAL(18, 2), Execution_Equipe DECIMAL(18, 2))
+Table DIM_Classe_Client(Code_classe_client NVARCHAR(80) COLLATE "French_CI_AS", Description NVARCHAR(18) COLLATE "French_CI_AS")
+Table DIM_Client(Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Nom_Client NVARCHAR(80) COLLATE "French_CI_AS", Classe_Client NVARCHAR(80) COLLATE "French_CI_AS", Code_Marche NVARCHAR(30) COLLATE "French_CI_AS", Code_Type_Client NVARCHAR(30) COLLATE "French_CI_AS", Status_Client VARCHAR(10) COLLATE "French_CI_AS", Region NVARCHAR(30) COLLATE "French_CI_AS", Code_Devise NCHAR(10) COLLATE "French_CI_AS")
+Table DIM_Cout_Article(Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Groupe_Cout NVARCHAR(80) COLLATE "French_CI_AS", Date_Changement DATETIME, Cout_Total DECIMAL(18, 2), Cout_Matiere DECIMAL(18, 2), Cout_MO DECIMAL(18, 2), Cout_FGV DECIMAL(18, 2), Cout_FGF DECIMAL(18, 2), Cout_ST DECIMAL(18, 2), Cout_Matiere_NI DECIMAL(18, 2), Cout_MO_NI DECIMAL(18, 2), Cout_FGV_NI DECIMAL(18, 2), Cout_FGF_NI DECIMAL(18, 2), Cout_ST_NI DECIMAL(18, 2))
+Table DIM_Date(Date DATETIME, Jour INTEGER, Nom_Jour NVARCHAR(50) COLLATE "French_CI_AS", Num_Semaine INTEGER, Mois INTEGER, Nom_Mois NVARCHAR(50) COLLATE "French_CI_AS", Trimestre INTEGER, Semestre INTEGER, Annee INTEGER)
+Table DIM_Departement(Code_Dpt NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(161) COLLATE "French_CI_AS", Capacite_Mch INTEGER, Unite_Prod NCHAR(30) COLLATE "French_CI_AS")
+Table DIM_Devise(Code_Devise NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(80) COLLATE "French_CI_AS", Date_Fin DATE, Taux_Change NVARCHAR(50) COLLATE "French_CI_AS")
+Table DIM_Domaine(Code_Domaine NVARCHAR(8) COLLATE "French_CI_AS", Description NVARCHAR(100) COLLATE "French_CI_AS", Type_Domaine NVARCHAR(8) COLLATE "French_CI_AS")
+Table DIM_Famille_Article(Code_Famille NVARCHAR(30) COLLATE "French_CI_AS", Description VARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Fournisseur(Code_Fournisseur NVARCHAR(30) COLLATE "French_CI_AS", Nom_Fournisseur NVARCHAR(161) COLLATE "French_CI_AS", Num_Telephone NVARCHAR(30) COLLATE "French_CI_AS", Pays NVARCHAR(30) COLLATE "French_CI_AS", Ville NVARCHAR(30) COLLATE "French_CI_AS", Etat NVARCHAR(10) COLLATE "French_CI_AS", Contact NVARCHAR(120) COLLATE "French_CI_AS", Devise NVARCHAR(10) COLLATE "French_CI_AS", Remarque NVARCHAR(120) COLLATE "French_CI_AS", Type NVARCHAR(10) COLLATE "French_CI_AS")
+Table DIM_Gamme(Code_Gamme NVARCHAR(30) COLLATE "French_CI_AS", Operation INTEGER, Description_Oper NVARCHAR(80) COLLATE "French_CI_AS", Machine NVARCHAR(80) COLLATE "French_CI_AS", Date_Debut DATETIME, Date_Fin DATETIME, Centre_Charge NVARCHAR(80) COLLATE "French_CI_AS", Temps_Reglage DECIMAL(18, 2), Temps_Execution DECIMAL(18, 2), Equipe_Reglage DECIMAL(18, 2), Equipe_Execution DECIMAL(18, 2), Cadence DECIMAL(18, 2))
+Table DIM_Methode_Paiement(Code_Methode_Paiement NVARCHAR(30) COLLATE "French_CI_AS", Description_Methode_Paiement NVARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Modalite_Paiement(Code_Modalite NVARCHAR(80) COLLATE "French_CI_AS", Description_Modalite NVARCHAR(80) COLLATE "French_CI_AS", Delais INTEGER)
+Table DIM_Motif_Arret_Prod(Code_Motif NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Motif_Retard(Code_Motif NVARCHAR(30) COLLATE "French_CI_AS", Description_Motif NVARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Motif_Retour(Code_Motif NVARCHAR(30) COLLATE "French_CI_AS", Description_Motif NVARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Motif_Retour_Achat(Code_Motif NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Nomenclature(Code_Nomenclature NVARCHAR(30) COLLATE "French_CI_AS", Compose NVARCHAR(30) COLLATE "French_CI_AS", Compose_Desc NVARCHAR(161) COLLATE "French_CI_AS", Composant NVARCHAR(30) COLLATE "French_CI_AS", Date_Debut DATETIME, Date_Fin DATETIME, Quantite_par DECIMAL(18, 2), Rebut DECIMAL(18, 2), Formule NVARCHAR(30) COLLATE "French_CI_AS")
+Table DIM_Operations(N_Op NVARCHAR(10) COLLATE "French_CI_AS", Operation NVARCHAR(80) COLLATE "French_CI_AS", Description NVARCHAR(80) COLLATE "French_CI_AS", Machine NVARCHAR(80) COLLATE "French_CI_AS", Centre_Charge NVARCHAR(80) COLLATE "French_CI_AS", Temps_Reglage DECIMAL(18, 2), Temps_Execution DECIMAL(18, 2), Rendement DECIMAL(18, 2))
+Table DIM_Region(Code_Region NVARCHAR(80) COLLATE "French_CI_AS", Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Code_Adresse NVARCHAR(80) COLLATE "French_CI_AS", Adresse NVARCHAR(100) COLLATE "French_CI_AS", Ville NVARCHAR(50) COLLATE "French_CI_AS", Type_Adresse VARCHAR(10) COLLATE "French_CI_AS", Pays NVARCHAR(50) COLLATE "French_CI_AS")
+  FK DIM_Region.Code_Client -> DIM_Client.Code_Client
+Table DIM_Site(Code_Site NVARCHAR(80) COLLATE "French_CI_AS", Description NVARCHAR(100) COLLATE "French_CI_AS", Status NVARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Statut_Commande(Statut VARCHAR(1) COLLATE "French_CI_AS", Description_Statut NVARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Type_Article(Code_Type_Article NVARCHAR(80) COLLATE "French_CI_AS", Description NVARCHAR(100) COLLATE "French_CI_AS")
+Table DIM_Type_Client(Code_Type_Client NVARCHAR(80) COLLATE "French_CI_AS", Description NVARCHAR(100) COLLATE "French_CI_AS")
+Table DIM_Type_Fournisseur(Code_Type_Fournisseur NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(100) COLLATE "French_CI_AS")
+Table DIM_Type_Marche(Code_Type_Marche NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(30) COLLATE "French_CI_AS")
+Table DIM_Type_Transaction(Code_Type_Transaction NVARCHAR(30) COLLATE "French_CI_AS", Description_Type_Transaction NVARCHAR(80) COLLATE "French_CI_AS")
+Table DIM_Unite_Mesure(Code_Unite_Mesure NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(100) COLLATE "French_CI_AS")
+Table Dim_Unite_Production(Code_Unite NVARCHAR(80) COLLATE "French_CI_AS", Description NVARCHAR(100) COLLATE "French_CI_AS")
+Table Dim_Validite_UP(Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Unite_Production NVARCHAR(80) COLLATE "French_CI_AS", Date_Debut DATE, Date_Fin DATE)
+Table FACT_Assoc_Bon_Livraison(Loading_Date DATE, Num_Commande NVARCHAR(80) COLLATE "French_CI_AS", Code_Region NVARCHAR(80) COLLATE "French_CI_AS", Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Unité_Mesure NVARCHAR(30) COLLATE "French_CI_AS", Code_Site NVARCHAR(80) COLLATE "French_CI_AS", Num_Facture NVARCHAR(80) COLLATE "French_CI_AS", Num_BL NVARCHAR(80) COLLATE "French_CI_AS", Date_Livraison_BL DATETIME, Ligne_Num INTEGER, Quantité_Livrée DECIMAL(18, 2), Domaine NVARCHAR(8) COLLATE "French_CI_AS", Lot_BL NVARCHAR(30) COLLATE "French_CI_AS", ID_Livraison NVARCHAR(80) COLLATE "French_CI_AS", Date_Reception_Clt DATETIME)
+  FK FACT_Assoc_Bon_Livraison.Code_Article -> DIM_Article.Code_Article
+  FK FACT_Assoc_Bon_Livraison.Code_Region -> DIM_Region.Code_Region
+  FK FACT_Assoc_Bon_Livraison.Code_Site -> DIM_Site.Code_Site
+  FK FACT_Assoc_Bon_Livraison.Num_Commande -> FACT_Commande_Client.Num_Commande
+  FK FACT_Assoc_Bon_Livraison.Num_Facture -> FACT_Serial.Num_Facture
+Table FACT_Assoc_Reception(Num_Reception NVARCHAR(30) COLLATE "French_CI_AS", Num_Commande NVARCHAR(80) COLLATE "French_CI_AS", Code_Fournisseur NVARCHAR(30) COLLATE "French_CI_AS", Num_Ligne INTEGER, Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Qte_Commandee DECIMAL(18, 2), Qte_reçue DECIMAL(18, 2), Qte_Cumul_Reçue DECIMAL(18, 2), Qte_Ouverte DECIMAL(18, 2), Date_Reception DATE, Date_Livraison_Frs DATE, Max_Date_Recep DATE, Max_Date_BC DATE, Cout_OA_Devise DECIMAL(18, 2), Cout_OA_TND DECIMAL(18, 2), Site NVARCHAR(30) COLLATE "French_CI_AS", Cout_Fact_Devise DECIMAL(18, 2), Cout_Fact_TND DECIMAL(18, 2), Cout_Std DECIMAL(18, 2), Devise NVARCHAR(10) COLLATE "French_CI_AS", Taux_Change DECIMAL(18, 2), Unite_Achat NVARCHAR(10) COLLATE "French_CI_AS", Conversion_Unite DECIMAL(18, 2), Motif_Retour NCHAR(15) COLLATE "French_CI_AS", Type_Document VARCHAR(50) COLLATE "French_CI_AS")
+  FK FACT_Assoc_Reception.Code_Article -> DIM_Article.Code_Article
+  FK FACT_Assoc_Reception.Code_Fournisseur -> DIM_Fournisseur.Code_Fournisseur
+  FK FACT_Assoc_Reception.Num_Commande -> FACT_Commande_Client.Num_Commande
+Table FACT_Assoc_Retour(Loading_Date DATE, Num_Commande NVARCHAR(80) COLLATE "French_CI_AS", Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Prix_Unitaire DECIMAL(18, 2), Code_Devise NVARCHAR(30) COLLATE "French_CI_AS", Taux_Change DECIMAL(18, 2), Remise_Commande DECIMAL(18, 2), Num_Facture NVARCHAR(80) COLLATE "French_CI_AS", Ligne_Num INTEGER, Date_Retour DATETIME, Motif_Retour NVARCHAR(80) COLLATE "French_CI_AS", Montant_Retour DECIMAL(18, 2), Quantité_Retournée DECIMAL(18, 2), Code_Article NVARCHAR(30) COLLATE "French_CI_AS")
+  FK FACT_Assoc_Retour.Code_Article -> DIM_Article.Code_Article
+  FK FACT_Assoc_Retour.Code_Client -> DIM_Client.Code_Client
+  FK FACT_Assoc_Retour.Code_Devise -> DIM_Devise.Code_Devise
+  FK FACT_Assoc_Retour.Num_Commande -> FACT_Commande_Client.Num_Commande
+  FK FACT_Assoc_Retour.Num_Facture -> FACT_Serial.Num_Facture
+Table FACT_Commande_Client(Loading_Date DATE, Date_Transaction DATETIME, Num_Sequence INTEGER, Statut VARCHAR(1) COLLATE "French_CI_AS", Num_Commande NVARCHAR(80) COLLATE "French_CI_AS", Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Code_Region NVARCHAR(80) COLLATE "French_CI_AS", Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Date_Commande DATETIME, Date_Demandee DATETIME, Date_Echeance DATETIME, Date_Echeance_Ligne DATETIME, Date_Promis_Ligne DATETIME, Date_Evaluation_Ligne DATETIME, Date_Demandee_Ligne DATETIME, Date_Prelevement DATETIME, Date_Confirmee DATETIME, Prix_Unitaire DECIMAL(18, 2), Code_Devise NVARCHAR(30) COLLATE "French_CI_AS", Taux_Change DECIMAL(18, 2), Unite_Mesure NVARCHAR(30) COLLATE "French_CI_AS", Remise_Commande DECIMAL(18, 2), Ligne_Produit NVARCHAR(30) COLLATE "French_CI_AS", Cout_Std_Unitaire DECIMAL(18, 2), Code_Site NVARCHAR(80) COLLATE "French_CI_AS", Ligne_Num INTEGER, Quantite_Commandee DECIMAL(18, 2), Total_Quantite_Facturee DECIMAL(18, 2), Total_Quantite_Livree DECIMAL(18, 2), Quantite_Ouverte DECIMAL(18, 2), Total_Quantite_Retournee DECIMAL(18, 2), Montant_Commande DECIMAL(18, 2), Total_Montant_Facture DECIMAL(18, 2), Total_Montant_Livree DECIMAL(18, 2), Total_Montant_Retour DECIMAL(18, 2), Domaine NVARCHAR(8) COLLATE "French_CI_AS", Type_Commande NVARCHAR(30) COLLATE "French_CI_AS", So_Flag INTEGER, Statut_Final NVARCHAR(30) COLLATE "French_CI_AS", Max_Date_Confirmee DATETIME, Max_Date_Livraison DATETIME, Max_Date_Promis DATETIME, Nombre_Jour INTEGER, Is_Max_Num_seq TINYINT, Max_Date_Reception_Client DATETIME, Max_Date_Echeance_Ligne DATETIME, Max_Date_Demandee_Ligne DATETIME, Statut_Final_Commande NVARCHAR(30) COLLATE "French_CI_AS", Statut_Livraison TINYINT, Visibilite TINYINT, Check TINYINT, Code_Motif_Retard NVARCHAR(80) COLLATE "French_CI_AS")
+  FK FACT_Commande_Client.Code_Article -> DIM_Article.Code_Article
+  FK FACT_Commande_Client.Code_Client -> DIM_Client.Code_Client
+  FK FACT_Commande_Client.Code_Region -> DIM_Region.Code_Region
+  FK FACT_Commande_Client.Code_Site -> DIM_Site.Code_Site
+Table FACT_Ordre_Achat(Num_Commande NVARCHAR(80) COLLATE "French_CI_AS", Code_Fournisseur NVARCHAR(30) COLLATE "French_CI_AS", Acheteur NVARCHAR(30) COLLATE "French_CI_AS", Num_Ligne INTEGER, Statut NVARCHAR(3) COLLATE "French_CI_AS", Num_DA NVARCHAR(30) COLLATE "French_CI_AS", Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Qte_Commandee DECIMAL(18, 2), Qte_reçue DECIMAL(18, 2), Qte_Ouverte DECIMAL(18, 2), Date_Commande DATE, Date_Ech_Ligne DATE, Date_Eval_Ligne DATE, Date_Besoin_Ligne DATE, Date_Cloture DATE, Cout_Achat DECIMAL(18, 2), Cout_Std DECIMAL(18, 2), Remise DECIMAL(18, 2), Devise NVARCHAR(10) COLLATE "French_CI_AS", Taux_Change DECIMAL(18, 2), Unite_Mesure NVARCHAR(10) COLLATE "French_CI_AS", Conversion_Unite DECIMAL(18, 2), Unite_Remplacement NVARCHAR(10) COLLATE "French_CI_AS", Statut_Ordre NVARCHAR(3) COLLATE "French_CI_AS", Remarque NVARCHAR(100) COLLATE "French_CI_AS", Site NVARCHAR(30) COLLATE "French_CI_AS", Credit_Terms NVARCHAR(80) COLLATE "French_CI_AS", Credit_Desc NVARCHAR(80) COLLATE "French_CI_AS", Credit_Jours DECIMAL(18, 2))
+  FK FACT_Ordre_Achat.Code_Fournisseur -> DIM_Fournisseur.Code_Fournisseur
+  FK FACT_Ordre_Achat.Num_Commande -> FACT_Commande_Client.Num_Commande
+Table FACT_PROD_Arret(N_OF NVARCHAR(30) COLLATE "French_CI_AS", N_ID NVARCHAR(80) COLLATE "French_CI_AS", Code_Article_OF NVARCHAR(20) COLLATE "French_CI_AS", Departement NVARCHAR(30) COLLATE "French_CI_AS", Date_Debut DATE, Date_Fin DATE, Heure_Debut NVARCHAR(12) COLLATE "French_CI_AS", Heure_Fin NVARCHAR(12) COLLATE "French_CI_AS", N_Operation NVARCHAR(12) COLLATE "French_CI_AS", Centre_Charge NVARCHAR(20) COLLATE "French_CI_AS", Machine NVARCHAR(20) COLLATE "French_CI_AS", Exec_Std DECIMAL(18, 2), Duree DECIMAL(18, 2), Code_Motif NVARCHAR(30) COLLATE "French_CI_AS", Date_Chargement DATETIME)
+  FK FACT_PROD_Arret.Code_Motif -> DIM_Motif_Arret_Prod.Code_Motif
+  FK FACT_PROD_Arret.N_ID -> FACT_PROD_Consommation.N_ID
+  FK FACT_PROD_Arret.N_OF -> FACT_PROD_Valorisation.N_OF
+Table FACT_PROD_Consommation(N_OF NVARCHAR(30) COLLATE "French_CI_AS", N_ID NVARCHAR(80) COLLATE "French_CI_AS", Statut NVARCHAR(30) COLLATE "French_CI_AS", Code_Article_OF NVARCHAR(30) COLLATE "French_CI_AS", Qte_Commandee DECIMAL(18, 2), Qte_Theorique DECIMAL(18, 2), Qte_Terminee DECIMAL(18, 2), Ecart_OF DECIMAL(18, 2), Date_Creation DATETIME, Date_Lancement DATETIME, Date_Echeance DATETIME, Date_Reçu DATETIME, Date_Cloture DATETIME, Duree_OF INTEGER, Code_Gamme NVARCHAR(30) COLLATE "French_CI_AS", Code_Nomenclature NVARCHAR(30) COLLATE "French_CI_AS", Rendement DECIMAL(18, 2), Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(180) COLLATE "French_CI_AS", Unite NVARCHAR(30) COLLATE "French_CI_AS", Famille_Article NVARCHAR(10) COLLATE "French_CI_AS", Unite_Prod NVARCHAR(30) COLLATE "French_CI_AS", Date_Sortie DATETIME, Qte_Demandee DECIMAL(18, 2), Qte_Demandee_Calc DECIMAL(18, 2), Qte_Allouee DECIMAL(18, 2), Qte_prelevee DECIMAL(18, 2), Qte_A_Sortir DECIMAL(18, 2), Qte_Sortie DECIMAL(18, 2), Formule NVARCHAR(80) COLLATE "French_CI_AS", Coef_Nomenc DECIMAL(18, 2), Cout_Matiere DECIMAL(18, 2), Cout_Std_Tot_Reel DECIMAL(18, 2), Visibilite INTEGER, Dernier_Produit_OF INTEGER)
+  FK FACT_PROD_Consommation.Code_Article -> DIM_Article.Code_Article
+  FK FACT_PROD_Consommation.Code_Gamme -> DIM_Gamme.Code_Gamme
+  FK FACT_PROD_Consommation.N_OF -> FACT_PROD_Valorisation.N_OF
+Table FACT_PROD_Declaration(N_OF NVARCHAR(30) COLLATE "French_CI_AS", N_ID NVARCHAR(80) COLLATE "French_CI_AS", Statut NVARCHAR(30) COLLATE "French_CI_AS", Code_Article_OF NVARCHAR(30) COLLATE "French_CI_AS", N_OP INTEGER, Desc_Op NVARCHAR(80) COLLATE "French_CI_AS", Centre_Charge NVARCHAR(80) COLLATE "French_CI_AS", Machine NVARCHAR(80) COLLATE "French_CI_AS", Temps_Regl_Std DECIMAL(18, 2), Temps_Exec_Unit_Std DECIMAL(18, 2), Temps_Exec_Std DECIMAL(18, 2), Temps_Regl_Reel DECIMAL(18, 2), Temps_Exec_Reel DECIMAL(18, 2), Qte_Commandee DECIMAL(18, 2), Qte_Terminee DECIMAL(18, 2), Qte_Rejetee DECIMAL(18, 2), Date_Demarrage DATETIME, Date_Echeance DATETIME, %Rendement DECIMAL(18, 2), Cout_FGV_Std DECIMAL(18, 2), Cout_FGV_Reel DECIMAL(18, 2), Cout_MO_Std DECIMAL(18, 2), Cout_MO_Reel DECIMAL(18, 2), Equipe_Reglage DECIMAL(18, 2), Equipe_Execution DECIMAL(18, 2), Taux_MO DECIMAL(18, 2), Taux_FGV_MO DECIMAL(18, 2), Taux_Machine_FGV DECIMAL(18, 2), Visibilite INTEGER, Departement NVARCHAR(30) COLLATE "French_CI_AS", Duree_Arret DECIMAL(18, 2))
+  FK FACT_PROD_Declaration.N_OF -> FACT_PROD_Valorisation.N_OF
+Table Fact_Prod_Stocks(Article NVARCHAR(30) COLLATE "French_CI_AS", Description NVARCHAR(80) COLLATE "French_CI_AS", UM NVARCHAR(30) COLLATE "French_CI_AS", Type NVARCHAR(30) COLLATE "French_CI_AS", statut NVARCHAR(80) COLLATE "French_CI_AS", Num_Lot NVARCHAR(30) COLLATE "French_CI_AS", Domain NVARCHAR(30) COLLATE "French_CI_AS", Emplacement NVARCHAR(80) COLLATE "French_CI_AS", Date_Exp DATETIME, Reference NVARCHAR(80) COLLATE "French_CI_AS", Site NVARCHAR(30) COLLATE "French_CI_AS", In_Qty_Oh DECIMAL(18, 2), Ld_Qty_Oh DECIMAL(18, 2), Date_Importe DATETIME)
+Table FACT_PROD_Valorisation(N_OF NVARCHAR(30) COLLATE "French_CI_AS", Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Qte_Terminee_Cons_AVG DECIMAL(18, 2), Qte_Terminee_Cons_MINMAX DECIMAL(18, 2), Valeur_Cons DECIMAL(18, 2), Nbr_20_Cons INTEGER, Qte_Terminee_Decl_AVG DECIMAL(18, 2), Qte_Terminee_Decl_MINMAX DECIMAL(18, 2), Valeur_Decl DECIMAL(18, 2), Valeur_MO DECIMAL(18, 2), Valeur_FGV DECIMAL(18, 2), Nbr_20_Decl INTEGER, Visibilite INTEGER, Date_Lancement DATETIME, Cout_Std DECIMAL(18, 2), Cout_Std_MO DECIMAL(18, 2), Cout_Std_FGV DECIMAL(18, 2), Cout_Std_Matiere DECIMAL(18, 2))
+  FK FACT_PROD_Valorisation.Code_Article -> DIM_Article.Code_Article
+Table FACT_Recouvrement_Client(Loading_Date DATE, Code_Type_Transaction NVARCHAR(30) COLLATE "French_CI_AS", Statut NVARCHAR(80) COLLATE "French_CI_AS", Designation NVARCHAR(30) COLLATE "French_CI_AS", Num_Document NVARCHAR(30) COLLATE "French_CI_AS", Situation NVARCHAR(30) COLLATE "French_CI_AS", Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Code_Payant NVARCHAR(80) COLLATE "French_CI_AS", Code_Region NVARCHAR(80) COLLATE "French_CI_AS", Date_Effet DATETIME, Date_Echeance DATETIME, Nombre_Jour INTEGER, Date_Paiement DATETIME, Code_Modalite_Paiement NVARCHAR(80) COLLATE "French_CI_AS", Code_Methode_Paiement NVARCHAR(30) COLLATE "French_CI_AS", Code_Devise NVARCHAR(30) COLLATE "French_CI_AS", Taux_Change DECIMAL(18, 2), Montant_Total DECIMAL(18, 2), Montant_Regle DECIMAL(18, 2), Montant_Ouvert DECIMAL(18, 2), Ouvert BIT, Montant_Total_TND DECIMAL(18, 2), Montant_Regle_TND DECIMAL(18, 2), Montant_Ouvert_TND DECIMAL(18, 2), Type_Operation NVARCHAR(30) COLLATE "French_CI_AS", Banque NVARCHAR(50) COLLATE "French_CI_AS", Num_Cheque NVARCHAR(50) COLLATE "French_CI_AS", Date DATETIME)
+  FK FACT_Recouvrement_Client.Code_Client -> DIM_Client.Code_Client
+  FK FACT_Recouvrement_Client.Code_Devise -> DIM_Devise.Code_Devise
+  FK FACT_Recouvrement_Client.Code_Methode_Paiement -> DIM_Methode_Paiement.Code_Methode_Paiement
+  FK FACT_Recouvrement_Client.Code_Region -> DIM_Region.Code_Region
+  FK FACT_Recouvrement_Client.Code_Type_Transaction -> DIM_Type_Transaction.Code_Type_Transaction
+Table FACT_Serial(Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Num_Facture NVARCHAR(80) COLLATE "French_CI_AS", Date_Facture DATETIME, Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Lot_Article NVARCHAR(30) COLLATE "French_CI_AS")
+  FK FACT_Serial.Code_Article -> DIM_Article.Code_Article
+  FK FACT_Serial.Code_Client -> DIM_Client.Code_Client
+Table FACT_Vente(Loading_date DATE, Code_Client NVARCHAR(80) COLLATE "French_CI_AS", Code_Region NVARCHAR(80) COLLATE "French_CI_AS", Num_Facture NVARCHAR(80) COLLATE "French_CI_AS", Date_Facture DATETIME, Num_Commande NVARCHAR(80) COLLATE "French_CI_AS", Ligne_Num INTEGER, Num_Commande_Clt NVARCHAR(30) COLLATE "French_CI_AS", Code_Article NVARCHAR(30) COLLATE "French_CI_AS", Lot_Article NVARCHAR(30) COLLATE "French_CI_AS", Unite_Mesure NVARCHAR(30) COLLATE "French_CI_AS", Code_Site NVARCHAR(80) COLLATE "French_CI_AS", Code_Domaine NVARCHAR(8) COLLATE "French_CI_AS", Code_Devise NVARCHAR(30) COLLATE "French_CI_AS", Prix_Unitaire DECIMAL(18, 2), Cout_Std_Unitaire DECIMAL(18, 2), Quantité DECIMAL(18, 2), Remise_Ligne DECIMAL(18, 2), Remise_Facture DECIMAL(18, 2), Cout_Std_TND DECIMAL(18, 2), CA_TND DECIMAL(18, 2), Marge_STD DECIMAL(18, 2), CA_Devise_Ope DECIMAL(18, 2), Taux_Change DECIMAL(18, 2), Type_Document VARCHAR(7) COLLATE "French_CI_AS")
+  FK FACT_Vente.Code_Article -> DIM_Article.Code_Article
+  FK FACT_Vente.Code_Client -> DIM_Client.Code_Client
+  FK FACT_Vente.Code_Devise -> DIM_Devise.Code_Devise
+  FK FACT_Vente.Code_Domaine -> DIM_Domaine.Code_Domaine
+  FK FACT_Vente.Code_Region -> DIM_Region.Code_Region
+  FK FACT_Vente.Code_Site -> DIM_Site.Code_Site
+  FK FACT_Vente.Num_Commande -> FACT_Commande_Client.Num_Commande
+  FK FACT_Vente.Num_Facture -> FACT_Serial.Num_Facture
+Table SEC_Role(RoleId INTEGER, NomRole NVARCHAR(50) COLLATE "French_CI_AS", Description NVARCHAR(255) COLLATE "French_CI_AS")
+Table SEC_Role_Colonne_Masquee(RoleId INTEGER, NomTable NVARCHAR(128) COLLATE "French_CI_AS", NomColonne NVARCHAR(128) COLLATE "French_CI_AS")
+  FK SEC_Role_Colonne_Masquee.RoleId -> SEC_Role.RoleId
+Table SEC_Role_Table_Acces(RoleId INTEGER, NomTable NVARCHAR(128) COLLATE "French_CI_AS", NiveauAcces NVARCHAR(20) COLLATE "French_CI_AS", FiltreLigne NVARCHAR(500) COLLATE "French_CI_AS")
+  FK SEC_Role_Table_Acces.RoleId -> SEC_Role.RoleId
+Table SEC_Utilisateur(UserId INTEGER, Login NVARCHAR(100) COLLATE "French_CI_AS", NomComplet NVARCHAR(150) COLLATE "French_CI_AS", Email NVARCHAR(150) COLLATE "French_CI_AS", RoleId INTEGER, CodeSite NVARCHAR(20) COLLATE "French_CI_AS", CodeRegion NVARCHAR(20) COLLATE "French_CI_AS", MotDePasseHash NVARCHAR(255) COLLATE "French_CI_AS", Actif BIT, DateCreation DATETIME2, DateDerniereConnexion DATETIME2)
+  FK SEC_Utilisateur.RoleId -> SEC_Role.RoleId
+
+── DÉTAIL PAR TABLE ──
+
+TABLE AGG_Commande
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Quantite_Commandee : DECIMAL(18, 2)
+    - Quantite_Retournee : DECIMAL(18, 2)
+    - Montant_Livree : DECIMAL(18, 2)
+    - Annee : INTEGER
+    - Mois : INTEGER
+    - Quantite_facturee : DECIMAL(18, 2)
+    - Quantite_livree : DECIMAL(18, 2)
+    - Montant_Commande : DECIMAL(18, 2)
+    - Montant_facturee : DECIMAL(18, 2)
+    - Montant_Retournee : DECIMAL(18, 2)
+
+TABLE AGG_Recouvrement_Client
+    - Annee : INTEGER
+    - Mois : INTEGER
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Creance_Client : DECIMAL(18, 2)
+    - Total_Recouvrement : DECIMAL(18, 2)
+    - En_Cours_Client : DECIMAL(18, 2)
+    - Total_Impaye : DECIMAL(18, 2)
+    - CA_TTC : DECIMAL(18, 2)
+    FK Code_Client -> DIM_Client.Code_Client
+
+TABLE AUDIT_Acces_Donnees
+    - AccesId : BIGINT  [PK, NOT NULL]
+    - InteractionId : BIGINT  [NOT NULL]
+    - NomTable : NVARCHAR(128) COLLATE "French_CI_AS"  [NOT NULL]
+    - StatutAcces : NVARCHAR(20) COLLATE "French_CI_AS"  [NOT NULL]
+    FK InteractionId -> AUDIT_Interaction.InteractionId
+
+TABLE AUDIT_Interaction
+    - InteractionId : BIGINT  [PK, NOT NULL]
+    - SessionId : UNIQUEIDENTIFIER  [NOT NULL]
+    - UserId : INTEGER  [NOT NULL]
+    - RoleId : INTEGER  [NOT NULL]
+    - DateHeure : DATETIME2  [NOT NULL]
+    - Question : NVARCHAR COLLATE "French_CI_AS"  [NOT NULL]
+    - SqlGenere : NVARCHAR COLLATE "French_CI_AS"
+    - TablesDemandees : NVARCHAR COLLATE "French_CI_AS"
+    - StatutExecution : NVARCHAR(20) COLLATE "French_CI_AS"  [NOT NULL]
+    - MessageErreur : NVARCHAR COLLATE "French_CI_AS"
+    - ReponseAssistant : NVARCHAR COLLATE "French_CI_AS"
+    - NbLignesRetournees : INTEGER
+    - DureeExecutionMs : INTEGER
+    - DureeTotaleMs : INTEGER
+    - ModeleLLM : NVARCHAR(100) COLLATE "French_CI_AS"
+    - Feedback : TINYINT
+    - CommentaireFeedback : NVARCHAR COLLATE "French_CI_AS"
+    - AdresseIP : NVARCHAR(50) COLLATE "French_CI_AS"
+    FK RoleId -> SEC_Role.RoleId
+    FK SessionId -> AUDIT_Session.SessionId
+    FK UserId -> SEC_Utilisateur.UserId
+
+TABLE AUDIT_Session
+    - SessionId : UNIQUEIDENTIFIER  [PK, NOT NULL]
+    - UserId : INTEGER  [NOT NULL]
+    - RoleId : INTEGER  [NOT NULL]
+    - DateDebut : DATETIME2  [NOT NULL]
+    - DateFin : DATETIME2
+    - Canal : NVARCHAR(50) COLLATE "French_CI_AS"
+    - AdresseIP : NVARCHAR(50) COLLATE "French_CI_AS"
+    FK RoleId -> SEC_Role.RoleId
+    FK UserId -> SEC_Utilisateur.UserId
+
+TABLE DIM_Article
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(161) COLLATE "French_CI_AS"
+    - Unite_Mesure : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Ligne_Produit : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Ligne_Produit_Description : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Type_Article : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Machine : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Status : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Unite_Production : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Famille_Article : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Group_Promo : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Article_Client_PCT : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Prix_Vente : NVARCHAR(30) COLLATE "French_CI_AS"
+    - AMM : NVARCHAR(50) COLLATE "French_CI_AS"
+
+TABLE DIM_Centre_Charge
+    - Code_centre_charge : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Centre_charge : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Machine : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Description : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Departement : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Date_Changement : DATE
+    - Machine_Centre : DECIMAL(18, 2)
+    - Machie_Operation : DECIMAL(18, 2)
+    - Taux_FGV_MO : DECIMAL(18, 2)
+    - Taux_Machine_FGV : DECIMAL(18, 2)
+    - Taux_Machine_Reg : DECIMAL(18, 2)
+    - Taux_MO : DECIMAL(18, 2)
+    - Taux_Reglage : DECIMAL(18, 2)
+    - Taux_Réglage_FGV : DECIMAL(18, 2)
+    - Taux_Rendement : DECIMAL(18, 2)
+    - Taux_Utilisation : DECIMAL(18, 2)
+    - Execution_Equipe : DECIMAL(18, 2)
+
+TABLE DIM_Classe_Client
+    - Code_classe_client : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(18) COLLATE "French_CI_AS"
+
+TABLE DIM_Client
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Nom_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Classe_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Marche : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Type_Client : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Status_Client : VARCHAR(10) COLLATE "French_CI_AS"
+    - Region : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Devise : NCHAR(10) COLLATE "French_CI_AS"
+
+TABLE DIM_Cout_Article
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Groupe_Cout : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Date_Changement : DATETIME
+    - Cout_Total : DECIMAL(18, 2)
+    - Cout_Matiere : DECIMAL(18, 2)
+    - Cout_MO : DECIMAL(18, 2)
+    - Cout_FGV : DECIMAL(18, 2)
+    - Cout_FGF : DECIMAL(18, 2)
+    - Cout_ST : DECIMAL(18, 2)
+    - Cout_Matiere_NI : DECIMAL(18, 2)
+    - Cout_MO_NI : DECIMAL(18, 2)
+    - Cout_FGV_NI : DECIMAL(18, 2)
+    - Cout_FGF_NI : DECIMAL(18, 2)
+    - Cout_ST_NI : DECIMAL(18, 2)
+
+TABLE DIM_Date
+    - Date : DATETIME
+    - Jour : INTEGER
+    - Nom_Jour : NVARCHAR(50) COLLATE "French_CI_AS"
+    - Num_Semaine : INTEGER  [PK, NOT NULL]
+    - Mois : INTEGER
+    - Nom_Mois : NVARCHAR(50) COLLATE "French_CI_AS"
+    - Trimestre : INTEGER
+    - Semestre : INTEGER
+    - Annee : INTEGER
+
+TABLE DIM_Departement
+    - Code_Dpt : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(161) COLLATE "French_CI_AS"
+    - Capacite_Mch : INTEGER
+    - Unite_Prod : NCHAR(30) COLLATE "French_CI_AS"
+
+TABLE DIM_Devise
+    - Code_Devise : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Date_Fin : DATE
+    - Taux_Change : NVARCHAR(50) COLLATE "French_CI_AS"
+
+TABLE DIM_Domaine
+    - Code_Domaine : NVARCHAR(8) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(100) COLLATE "French_CI_AS"
+    - Type_Domaine : NVARCHAR(8) COLLATE "French_CI_AS"
+
+TABLE DIM_Famille_Article
+    - Code_Famille : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : VARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Fournisseur
+    - Code_Fournisseur : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Nom_Fournisseur : NVARCHAR(161) COLLATE "French_CI_AS"
+    - Num_Telephone : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Pays : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Ville : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Etat : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Contact : NVARCHAR(120) COLLATE "French_CI_AS"
+    - Devise : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Remarque : NVARCHAR(120) COLLATE "French_CI_AS"
+    - Type : NVARCHAR(10) COLLATE "French_CI_AS"
+
+TABLE DIM_Gamme
+    - Code_Gamme : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Operation : INTEGER
+    - Description_Oper : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Machine : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Date_Debut : DATETIME
+    - Date_Fin : DATETIME
+    - Centre_Charge : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Temps_Reglage : DECIMAL(18, 2)
+    - Temps_Execution : DECIMAL(18, 2)
+    - Equipe_Reglage : DECIMAL(18, 2)
+    - Equipe_Execution : DECIMAL(18, 2)
+    - Cadence : DECIMAL(18, 2)
+
+TABLE DIM_Methode_Paiement
+    - Code_Methode_Paiement : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description_Methode_Paiement : NVARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Modalite_Paiement
+    - Code_Modalite : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description_Modalite : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Delais : INTEGER
+
+TABLE DIM_Motif_Arret_Prod
+    - Code_Motif : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Motif_Retard
+    - Code_Motif : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description_Motif : NVARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Motif_Retour
+    - Code_Motif : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description_Motif : NVARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Motif_Retour_Achat
+    - Code_Motif : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Nomenclature
+    - Code_Nomenclature : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Compose : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Compose_Desc : NVARCHAR(161) COLLATE "French_CI_AS"
+    - Composant : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Date_Debut : DATETIME
+    - Date_Fin : DATETIME
+    - Quantite_par : DECIMAL(18, 2)
+    - Rebut : DECIMAL(18, 2)
+    - Formule : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+
+TABLE DIM_Operations
+    - N_Op : NVARCHAR(10) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Operation : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Description : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Machine : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Centre_Charge : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Temps_Reglage : DECIMAL(18, 2)
+    - Temps_Execution : DECIMAL(18, 2)
+    - Rendement : DECIMAL(18, 2)
+
+TABLE DIM_Region
+    - Code_Region : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Adresse : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Adresse : NVARCHAR(100) COLLATE "French_CI_AS"
+    - Ville : NVARCHAR(50) COLLATE "French_CI_AS"
+    - Type_Adresse : VARCHAR(10) COLLATE "French_CI_AS"
+    - Pays : NVARCHAR(50) COLLATE "French_CI_AS"
+    FK Code_Client -> DIM_Client.Code_Client
+
+TABLE DIM_Site
+    - Code_Site : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(100) COLLATE "French_CI_AS"
+    - Status : NVARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Statut_Commande
+    - Statut : VARCHAR(1) COLLATE "French_CI_AS"
+    - Description_Statut : NVARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Type_Article
+    - Code_Type_Article : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(100) COLLATE "French_CI_AS"
+
+TABLE DIM_Type_Client
+    - Code_Type_Client : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(100) COLLATE "French_CI_AS"
+
+TABLE DIM_Type_Fournisseur
+    - Code_Type_Fournisseur : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(100) COLLATE "French_CI_AS"
+
+TABLE DIM_Type_Marche
+    - Code_Type_Marche : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(30) COLLATE "French_CI_AS"
+
+TABLE DIM_Type_Transaction
+    - Code_Type_Transaction : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description_Type_Transaction : NVARCHAR(80) COLLATE "French_CI_AS"
+
+TABLE DIM_Unite_Mesure
+    - Code_Unite_Mesure : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Description : NVARCHAR(100) COLLATE "French_CI_AS"
+
+TABLE Dim_Unite_Production
+    - Code_Unite : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Description : NVARCHAR(100) COLLATE "French_CI_AS"
+
+TABLE Dim_Validite_UP
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Unite_Production : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Date_Debut : DATE
+    - Date_Fin : DATE
+
+TABLE FACT_Assoc_Bon_Livraison
+    - Loading_Date : DATE
+    - Num_Commande : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Region : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Unité_Mesure : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Site : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Num_Facture : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Num_BL : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Date_Livraison_BL : DATETIME
+    - Ligne_Num : INTEGER
+    - Quantité_Livrée : DECIMAL(18, 2)
+    - Domaine : NVARCHAR(8) COLLATE "French_CI_AS"
+    - Lot_BL : NVARCHAR(30) COLLATE "French_CI_AS"
+    - ID_Livraison : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Date_Reception_Clt : DATETIME
+    FK Code_Article -> DIM_Article.Code_Article
+    FK Code_Region -> DIM_Region.Code_Region
+    FK Code_Site -> DIM_Site.Code_Site
+    FK Num_Commande -> FACT_Commande_Client.Num_Commande
+    FK Num_Facture -> FACT_Serial.Num_Facture
+
+TABLE FACT_Assoc_Reception
+    - Num_Reception : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Num_Commande : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Fournisseur : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Num_Ligne : INTEGER
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Qte_Commandee : DECIMAL(18, 2)
+    - Qte_reçue : DECIMAL(18, 2)
+    - Qte_Cumul_Reçue : DECIMAL(18, 2)
+    - Qte_Ouverte : DECIMAL(18, 2)
+    - Date_Reception : DATE
+    - Date_Livraison_Frs : DATE
+    - Max_Date_Recep : DATE
+    - Max_Date_BC : DATE
+    - Cout_OA_Devise : DECIMAL(18, 2)
+    - Cout_OA_TND : DECIMAL(18, 2)
+    - Site : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Cout_Fact_Devise : DECIMAL(18, 2)
+    - Cout_Fact_TND : DECIMAL(18, 2)
+    - Cout_Std : DECIMAL(18, 2)
+    - Devise : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Taux_Change : DECIMAL(18, 2)
+    - Unite_Achat : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Conversion_Unite : DECIMAL(18, 2)
+    - Motif_Retour : NCHAR(15) COLLATE "French_CI_AS"
+    - Type_Document : VARCHAR(50) COLLATE "French_CI_AS"
+    FK Code_Article -> DIM_Article.Code_Article
+    FK Code_Fournisseur -> DIM_Fournisseur.Code_Fournisseur
+    FK Num_Commande -> FACT_Commande_Client.Num_Commande
+
+TABLE FACT_Assoc_Retour
+    - Loading_Date : DATE
+    - Num_Commande : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Prix_Unitaire : DECIMAL(18, 2)
+    - Code_Devise : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Taux_Change : DECIMAL(18, 2)
+    - Remise_Commande : DECIMAL(18, 2)
+    - Num_Facture : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Ligne_Num : INTEGER  [PK, NOT NULL]
+    - Date_Retour : DATETIME
+    - Motif_Retour : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Montant_Retour : DECIMAL(18, 2)
+    - Quantité_Retournée : DECIMAL(18, 2)
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    FK Code_Article -> DIM_Article.Code_Article
+    FK Code_Client -> DIM_Client.Code_Client
+    FK Code_Devise -> DIM_Devise.Code_Devise
+    FK Num_Commande -> FACT_Commande_Client.Num_Commande
+    FK Num_Facture -> FACT_Serial.Num_Facture
+
+TABLE FACT_Commande_Client
+    - Loading_Date : DATE
+    - Date_Transaction : DATETIME
+    - Num_Sequence : INTEGER
+    - Statut : VARCHAR(1) COLLATE "French_CI_AS"
+    - Num_Commande : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Region : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Date_Commande : DATETIME
+    - Date_Demandee : DATETIME
+    - Date_Echeance : DATETIME
+    - Date_Echeance_Ligne : DATETIME
+    - Date_Promis_Ligne : DATETIME
+    - Date_Evaluation_Ligne : DATETIME
+    - Date_Demandee_Ligne : DATETIME
+    - Date_Prelevement : DATETIME
+    - Date_Confirmee : DATETIME
+    - Prix_Unitaire : DECIMAL(18, 2)
+    - Code_Devise : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Taux_Change : DECIMAL(18, 2)
+    - Unite_Mesure : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Remise_Commande : DECIMAL(18, 2)
+    - Ligne_Produit : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Cout_Std_Unitaire : DECIMAL(18, 2)
+    - Code_Site : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Ligne_Num : INTEGER
+    - Quantite_Commandee : DECIMAL(18, 2)
+    - Total_Quantite_Facturee : DECIMAL(18, 2)
+    - Total_Quantite_Livree : DECIMAL(18, 2)
+    - Quantite_Ouverte : DECIMAL(18, 2)
+    - Total_Quantite_Retournee : DECIMAL(18, 2)
+    - Montant_Commande : DECIMAL(18, 2)
+    - Total_Montant_Facture : DECIMAL(18, 2)
+    - Total_Montant_Livree : DECIMAL(18, 2)
+    - Total_Montant_Retour : DECIMAL(18, 2)
+    - Domaine : NVARCHAR(8) COLLATE "French_CI_AS"
+    - Type_Commande : NVARCHAR(30) COLLATE "French_CI_AS"
+    - So_Flag : INTEGER
+    - Statut_Final : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Max_Date_Confirmee : DATETIME
+    - Max_Date_Livraison : DATETIME
+    - Max_Date_Promis : DATETIME
+    - Nombre_Jour : INTEGER
+    - Is_Max_Num_seq : TINYINT
+    - Max_Date_Reception_Client : DATETIME
+    - Max_Date_Echeance_Ligne : DATETIME
+    - Max_Date_Demandee_Ligne : DATETIME
+    - Statut_Final_Commande : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Statut_Livraison : TINYINT
+    - Visibilite : TINYINT
+    - Check : TINYINT  [NOT NULL]
+    - Code_Motif_Retard : NVARCHAR(80) COLLATE "French_CI_AS"
+    FK Code_Article -> DIM_Article.Code_Article
+    FK Code_Client -> DIM_Client.Code_Client
+    FK Code_Region -> DIM_Region.Code_Region
+    FK Code_Site -> DIM_Site.Code_Site
+
+TABLE FACT_Ordre_Achat
+    - Num_Commande : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Fournisseur : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Acheteur : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Num_Ligne : INTEGER
+    - Statut : NVARCHAR(3) COLLATE "French_CI_AS"
+    - Num_DA : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Qte_Commandee : DECIMAL(18, 2)
+    - Qte_reçue : DECIMAL(18, 2)
+    - Qte_Ouverte : DECIMAL(18, 2)
+    - Date_Commande : DATE
+    - Date_Ech_Ligne : DATE
+    - Date_Eval_Ligne : DATE
+    - Date_Besoin_Ligne : DATE
+    - Date_Cloture : DATE
+    - Cout_Achat : DECIMAL(18, 2)
+    - Cout_Std : DECIMAL(18, 2)
+    - Remise : DECIMAL(18, 2)
+    - Devise : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Taux_Change : DECIMAL(18, 2)
+    - Unite_Mesure : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Conversion_Unite : DECIMAL(18, 2)
+    - Unite_Remplacement : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Statut_Ordre : NVARCHAR(3) COLLATE "French_CI_AS"
+    - Remarque : NVARCHAR(100) COLLATE "French_CI_AS"
+    - Site : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Credit_Terms : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Credit_Desc : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Credit_Jours : DECIMAL(18, 2)
+    FK Code_Fournisseur -> DIM_Fournisseur.Code_Fournisseur
+    FK Num_Commande -> FACT_Commande_Client.Num_Commande
+
+TABLE FACT_PROD_Arret
+    - N_OF : NVARCHAR(30) COLLATE "French_CI_AS"
+    - N_ID : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Article_OF : NVARCHAR(20) COLLATE "French_CI_AS"
+    - Departement : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Date_Debut : DATE
+    - Date_Fin : DATE
+    - Heure_Debut : NVARCHAR(12) COLLATE "French_CI_AS"
+    - Heure_Fin : NVARCHAR(12) COLLATE "French_CI_AS"
+    - N_Operation : NVARCHAR(12) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Centre_Charge : NVARCHAR(20) COLLATE "French_CI_AS"
+    - Machine : NVARCHAR(20) COLLATE "French_CI_AS"
+    - Exec_Std : DECIMAL(18, 2)
+    - Duree : DECIMAL(18, 2)
+    - Code_Motif : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Date_Chargement : DATETIME
+    FK Code_Motif -> DIM_Motif_Arret_Prod.Code_Motif
+    FK N_ID -> FACT_PROD_Consommation.N_ID
+    FK N_OF -> FACT_PROD_Valorisation.N_OF
+
+TABLE FACT_PROD_Consommation
+    - N_OF : NVARCHAR(30) COLLATE "French_CI_AS"
+    - N_ID : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Statut : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Article_OF : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Qte_Commandee : DECIMAL(18, 2)
+    - Qte_Theorique : DECIMAL(18, 2)
+    - Qte_Terminee : DECIMAL(18, 2)
+    - Ecart_OF : DECIMAL(18, 2)
+    - Date_Creation : DATETIME
+    - Date_Lancement : DATETIME
+    - Date_Echeance : DATETIME
+    - Date_Reçu : DATETIME
+    - Date_Cloture : DATETIME
+    - Duree_OF : INTEGER
+    - Code_Gamme : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Nomenclature : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Rendement : DECIMAL(18, 2)
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Description : NVARCHAR(180) COLLATE "French_CI_AS"
+    - Unite : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Famille_Article : NVARCHAR(10) COLLATE "French_CI_AS"
+    - Unite_Prod : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Date_Sortie : DATETIME
+    - Qte_Demandee : DECIMAL(18, 2)
+    - Qte_Demandee_Calc : DECIMAL(18, 2)
+    - Qte_Allouee : DECIMAL(18, 2)
+    - Qte_prelevee : DECIMAL(18, 2)
+    - Qte_A_Sortir : DECIMAL(18, 2)
+    - Qte_Sortie : DECIMAL(18, 2)
+    - Formule : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Coef_Nomenc : DECIMAL(18, 2)
+    - Cout_Matiere : DECIMAL(18, 2)
+    - Cout_Std_Tot_Reel : DECIMAL(18, 2)
+    - Visibilite : INTEGER
+    - Dernier_Produit_OF : INTEGER
+    FK Code_Article -> DIM_Article.Code_Article
+    FK Code_Gamme -> DIM_Gamme.Code_Gamme
+    FK N_OF -> FACT_PROD_Valorisation.N_OF
+
+TABLE FACT_PROD_Declaration
+    - N_OF : NVARCHAR(30) COLLATE "French_CI_AS"
+    - N_ID : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Statut : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Article_OF : NVARCHAR(30) COLLATE "French_CI_AS"
+    - N_OP : INTEGER
+    - Desc_Op : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Centre_Charge : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Machine : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Temps_Regl_Std : DECIMAL(18, 2)
+    - Temps_Exec_Unit_Std : DECIMAL(18, 2)
+    - Temps_Exec_Std : DECIMAL(18, 2)
+    - Temps_Regl_Reel : DECIMAL(18, 2)
+    - Temps_Exec_Reel : DECIMAL(18, 2)
+    - Qte_Commandee : DECIMAL(18, 2)
+    - Qte_Terminee : DECIMAL(18, 2)
+    - Qte_Rejetee : DECIMAL(18, 2)
+    - Date_Demarrage : DATETIME
+    - Date_Echeance : DATETIME
+    - %Rendement : DECIMAL(18, 2)
+    - Cout_FGV_Std : DECIMAL(18, 2)
+    - Cout_FGV_Reel : DECIMAL(18, 2)
+    - Cout_MO_Std : DECIMAL(18, 2)
+    - Cout_MO_Reel : DECIMAL(18, 2)
+    - Equipe_Reglage : DECIMAL(18, 2)
+    - Equipe_Execution : DECIMAL(18, 2)
+    - Taux_MO : DECIMAL(18, 2)
+    - Taux_FGV_MO : DECIMAL(18, 2)
+    - Taux_Machine_FGV : DECIMAL(18, 2)
+    - Visibilite : INTEGER
+    - Departement : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Duree_Arret : DECIMAL(18, 2)
+    FK N_OF -> FACT_PROD_Valorisation.N_OF
+
+TABLE Fact_Prod_Stocks
+    - Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Description : NVARCHAR(80) COLLATE "French_CI_AS"
+    - UM : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Type : NVARCHAR(30) COLLATE "French_CI_AS"
+    - statut : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Num_Lot : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Domain : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Emplacement : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Date_Exp : DATETIME
+    - Reference : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Site : NVARCHAR(30) COLLATE "French_CI_AS"
+    - In_Qty_Oh : DECIMAL(18, 2)
+    - Ld_Qty_Oh : DECIMAL(18, 2)
+    - Date_Importe : DATETIME
+
+TABLE FACT_PROD_Valorisation
+    - N_OF : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Qte_Terminee_Cons_AVG : DECIMAL(18, 2)
+    - Qte_Terminee_Cons_MINMAX : DECIMAL(18, 2)
+    - Valeur_Cons : DECIMAL(18, 2)
+    - Nbr_20_Cons : INTEGER
+    - Qte_Terminee_Decl_AVG : DECIMAL(18, 2)
+    - Qte_Terminee_Decl_MINMAX : DECIMAL(18, 2)
+    - Valeur_Decl : DECIMAL(18, 2)
+    - Valeur_MO : DECIMAL(18, 2)
+    - Valeur_FGV : DECIMAL(18, 2)
+    - Nbr_20_Decl : INTEGER
+    - Visibilite : INTEGER
+    - Date_Lancement : DATETIME
+    - Cout_Std : DECIMAL(18, 2)
+    - Cout_Std_MO : DECIMAL(18, 2)
+    - Cout_Std_FGV : DECIMAL(18, 2)
+    - Cout_Std_Matiere : DECIMAL(18, 2)
+    FK Code_Article -> DIM_Article.Code_Article
+
+TABLE FACT_Recouvrement_Client
+    - Loading_Date : DATE
+    - Code_Type_Transaction : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Statut : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Designation : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Num_Document : NVARCHAR(30) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Situation : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Payant : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Region : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Date_Effet : DATETIME
+    - Date_Echeance : DATETIME
+    - Nombre_Jour : INTEGER
+    - Date_Paiement : DATETIME
+    - Code_Modalite_Paiement : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Methode_Paiement : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Devise : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Taux_Change : DECIMAL(18, 2)
+    - Montant_Total : DECIMAL(18, 2)
+    - Montant_Regle : DECIMAL(18, 2)
+    - Montant_Ouvert : DECIMAL(18, 2)
+    - Ouvert : BIT
+    - Montant_Total_TND : DECIMAL(18, 2)
+    - Montant_Regle_TND : DECIMAL(18, 2)
+    - Montant_Ouvert_TND : DECIMAL(18, 2)
+    - Type_Operation : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Banque : NVARCHAR(50) COLLATE "French_CI_AS"
+    - Num_Cheque : NVARCHAR(50) COLLATE "French_CI_AS"
+    - Date : DATETIME
+    FK Code_Client -> DIM_Client.Code_Client
+    FK Code_Devise -> DIM_Devise.Code_Devise
+    FK Code_Methode_Paiement -> DIM_Methode_Paiement.Code_Methode_Paiement
+    FK Code_Region -> DIM_Region.Code_Region
+    FK Code_Type_Transaction -> DIM_Type_Transaction.Code_Type_Transaction
+
+TABLE FACT_Serial
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Num_Facture : NVARCHAR(80) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - Date_Facture : DATETIME
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Lot_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    FK Code_Article -> DIM_Article.Code_Article
+    FK Code_Client -> DIM_Client.Code_Client
+
+TABLE FACT_Vente
+    - Loading_date : DATE
+    - Code_Client : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Region : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Num_Facture : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Date_Facture : DATETIME
+    - Num_Commande : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Ligne_Num : INTEGER
+    - Num_Commande_Clt : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Lot_Article : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Unite_Mesure : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Code_Site : NVARCHAR(80) COLLATE "French_CI_AS"
+    - Code_Domaine : NVARCHAR(8) COLLATE "French_CI_AS"
+    - Code_Devise : NVARCHAR(30) COLLATE "French_CI_AS"
+    - Prix_Unitaire : DECIMAL(18, 2)
+    - Cout_Std_Unitaire : DECIMAL(18, 2)
+    - Quantité : DECIMAL(18, 2)
+    - Remise_Ligne : DECIMAL(18, 2)
+    - Remise_Facture : DECIMAL(18, 2)
+    - Cout_Std_TND : DECIMAL(18, 2)
+    - CA_TND : DECIMAL(18, 2)
+    - Marge_STD : DECIMAL(18, 2)
+    - CA_Devise_Ope : DECIMAL(18, 2)
+    - Taux_Change : DECIMAL(18, 2)
+    - Type_Document : VARCHAR(7) COLLATE "French_CI_AS"
+    FK Code_Article -> DIM_Article.Code_Article
+    FK Code_Client -> DIM_Client.Code_Client
+    FK Code_Devise -> DIM_Devise.Code_Devise
+    FK Code_Domaine -> DIM_Domaine.Code_Domaine
+    FK Code_Region -> DIM_Region.Code_Region
+    FK Code_Site -> DIM_Site.Code_Site
+    FK Num_Commande -> FACT_Commande_Client.Num_Commande
+    FK Num_Facture -> FACT_Serial.Num_Facture
+
+TABLE SEC_Role
+    - RoleId : INTEGER  [PK, NOT NULL]
+    - NomRole : NVARCHAR(50) COLLATE "French_CI_AS"  [NOT NULL]
+    - Description : NVARCHAR(255) COLLATE "French_CI_AS"
+
+TABLE SEC_Role_Colonne_Masquee
+    - RoleId : INTEGER  [PK, NOT NULL]
+    - NomTable : NVARCHAR(128) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - NomColonne : NVARCHAR(128) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    FK RoleId -> SEC_Role.RoleId
+
+TABLE SEC_Role_Table_Acces
+    - RoleId : INTEGER  [PK, NOT NULL]
+    - NomTable : NVARCHAR(128) COLLATE "French_CI_AS"  [PK, NOT NULL]
+    - NiveauAcces : NVARCHAR(20) COLLATE "French_CI_AS"  [NOT NULL]
+    - FiltreLigne : NVARCHAR(500) COLLATE "French_CI_AS"
+    FK RoleId -> SEC_Role.RoleId
+
+TABLE SEC_Utilisateur
+    - UserId : INTEGER  [PK, NOT NULL]
+    - Login : NVARCHAR(100) COLLATE "French_CI_AS"  [NOT NULL]
+    - NomComplet : NVARCHAR(150) COLLATE "French_CI_AS"
+    - Email : NVARCHAR(150) COLLATE "French_CI_AS"
+    - RoleId : INTEGER  [NOT NULL]
+    - CodeSite : NVARCHAR(20) COLLATE "French_CI_AS"
+    - CodeRegion : NVARCHAR(20) COLLATE "French_CI_AS"
+    - MotDePasseHash : NVARCHAR(255) COLLATE "French_CI_AS"
+    - Actif : BIT  [NOT NULL]
+    - DateCreation : DATETIME2  [NOT NULL]
+    - DateDerniereConnexion : DATETIME2
+    FK RoleId -> SEC_Role.RoleId
+
+── KNOWLEDGE BASE (entrées indexées) ──
+Total : 689 entrées
+Par type  : {'db_metadata': 589, 'domain_knowledge': 52, 'task_material': 48}
+Par label : {'Database': 1, 'Table': 53, 'Column': 535, 'Term': 52, 'Task': 48}
+
+  [Database] TestDB_DataWarehouse
+  [Table   ] AGG_Commande  (parent: Database TestDB_DataWarehouse)
+  [Column  ] AGG_Commande.Code_Client  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Code_Article  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Quantite_Commandee  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Quantite_Retournee  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Montant_Livree  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Annee  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Mois  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Quantite_facturee  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Quantite_livree  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Montant_Commande  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Montant_facturee  (parent: Table AGG_Commande)
+  [Column  ] AGG_Commande.Montant_Retournee  (parent: Table AGG_Commande)
+  [Table   ] AGG_Recouvrement_Client  (parent: Database TestDB_DataWarehouse)
+  [Column  ] AGG_Recouvrement_Client.Annee  (parent: Table AGG_Recouvrement_Client)
+  [Column  ] AGG_Recouvrement_Client.Mois  (parent: Table AGG_Recouvrement_Client)
+  [Column  ] AGG_Recouvrement_Client.Code_Client  (parent: Table AGG_Recouvrement_Client)
+  [Column  ] AGG_Recouvrement_Client.Creance_Client  (parent: Table AGG_Recouvrement_Client)
+  [Column  ] AGG_Recouvrement_Client.Total_Recouvrement  (parent: Table AGG_Recouvrement_Client)
+  [Column  ] AGG_Recouvrement_Client.En_Cours_Client  (parent: Table AGG_Recouvrement_Client)
+  [Column  ] AGG_Recouvrement_Client.Total_Impaye  (parent: Table AGG_Recouvrement_Client)
+  [Column  ] AGG_Recouvrement_Client.CA_TTC  (parent: Table AGG_Recouvrement_Client)
+  [Table   ] AUDIT_Acces_Donnees  (parent: Database TestDB_DataWarehouse)
+  [Column  ] AUDIT_Acces_Donnees.AccesId  (parent: Table AUDIT_Acces_Donnees)
+  [Column  ] AUDIT_Acces_Donnees.InteractionId  (parent: Table AUDIT_Acces_Donnees)
+  [Column  ] AUDIT_Acces_Donnees.NomTable  (parent: Table AUDIT_Acces_Donnees)
+  [Column  ] AUDIT_Acces_Donnees.StatutAcces  (parent: Table AUDIT_Acces_Donnees)
+  [Table   ] AUDIT_Interaction  (parent: Database TestDB_DataWarehouse)
+  [Column  ] AUDIT_Interaction.InteractionId  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.SessionId  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.UserId  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.RoleId  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.DateHeure  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.Question  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.SqlGenere  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.TablesDemandees  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.StatutExecution  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.MessageErreur  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.ReponseAssistant  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.NbLignesRetournees  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.DureeExecutionMs  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.DureeTotaleMs  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.ModeleLLM  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.Feedback  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.CommentaireFeedback  (parent: Table AUDIT_Interaction)
+  [Column  ] AUDIT_Interaction.AdresseIP  (parent: Table AUDIT_Interaction)
+  [Table   ] AUDIT_Session  (parent: Database TestDB_DataWarehouse)
+  [Column  ] AUDIT_Session.SessionId  (parent: Table AUDIT_Session)
+  [Column  ] AUDIT_Session.UserId  (parent: Table AUDIT_Session)
+  [Column  ] AUDIT_Session.RoleId  (parent: Table AUDIT_Session)
+  [Column  ] AUDIT_Session.DateDebut  (parent: Table AUDIT_Session)
+  [Column  ] AUDIT_Session.DateFin  (parent: Table AUDIT_Session)
+  [Column  ] AUDIT_Session.Canal  (parent: Table AUDIT_Session)
+  [Column  ] AUDIT_Session.AdresseIP  (parent: Table AUDIT_Session)
+  [Table   ] DIM_Article  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Article.Code_Article  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Description  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Unite_Mesure  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Ligne_Produit  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Ligne_Produit_Description  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Type_Article  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Machine  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Status  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Unite_Production  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Famille_Article  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Group_Promo  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Article_Client_PCT  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.Prix_Vente  (parent: Table DIM_Article)
+  [Column  ] DIM_Article.AMM  (parent: Table DIM_Article)
+  [Table   ] DIM_Centre_Charge  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Centre_Charge.Code_centre_charge  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Centre_charge  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Machine  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Description  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Departement  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Date_Changement  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Machine_Centre  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Machie_Operation  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Taux_FGV_MO  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Taux_Machine_FGV  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Taux_Machine_Reg  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Taux_MO  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Taux_Reglage  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Taux_Réglage_FGV  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Taux_Rendement  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Taux_Utilisation  (parent: Table DIM_Centre_Charge)
+  [Column  ] DIM_Centre_Charge.Execution_Equipe  (parent: Table DIM_Centre_Charge)
+  [Table   ] DIM_Classe_Client  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Classe_Client.Code_classe_client  (parent: Table DIM_Classe_Client)
+  [Column  ] DIM_Classe_Client.Description  (parent: Table DIM_Classe_Client)
+  [Table   ] DIM_Client  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Client.Code_Client  (parent: Table DIM_Client)
+  [Column  ] DIM_Client.Nom_Client  (parent: Table DIM_Client)
+  [Column  ] DIM_Client.Classe_Client  (parent: Table DIM_Client)
+  [Column  ] DIM_Client.Code_Marche  (parent: Table DIM_Client)
+  [Column  ] DIM_Client.Code_Type_Client  (parent: Table DIM_Client)
+  [Column  ] DIM_Client.Status_Client  (parent: Table DIM_Client)
+  [Column  ] DIM_Client.Region  (parent: Table DIM_Client)
+  [Column  ] DIM_Client.Code_Devise  (parent: Table DIM_Client)
+  [Table   ] DIM_Cout_Article  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Cout_Article.Code_Article  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Groupe_Cout  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Date_Changement  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_Total  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_Matiere  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_MO  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_FGV  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_FGF  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_ST  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_Matiere_NI  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_MO_NI  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_FGV_NI  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_FGF_NI  (parent: Table DIM_Cout_Article)
+  [Column  ] DIM_Cout_Article.Cout_ST_NI  (parent: Table DIM_Cout_Article)
+  [Table   ] DIM_Date  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Date.Date  (parent: Table DIM_Date)
+  [Column  ] DIM_Date.Jour  (parent: Table DIM_Date)
+  [Column  ] DIM_Date.Nom_Jour  (parent: Table DIM_Date)
+  [Column  ] DIM_Date.Num_Semaine  (parent: Table DIM_Date)
+  [Column  ] DIM_Date.Mois  (parent: Table DIM_Date)
+  [Column  ] DIM_Date.Nom_Mois  (parent: Table DIM_Date)
+  [Column  ] DIM_Date.Trimestre  (parent: Table DIM_Date)
+  [Column  ] DIM_Date.Semestre  (parent: Table DIM_Date)
+  [Column  ] DIM_Date.Annee  (parent: Table DIM_Date)
+  [Table   ] DIM_Departement  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Departement.Code_Dpt  (parent: Table DIM_Departement)
+  [Column  ] DIM_Departement.Description  (parent: Table DIM_Departement)
+  [Column  ] DIM_Departement.Capacite_Mch  (parent: Table DIM_Departement)
+  [Column  ] DIM_Departement.Unite_Prod  (parent: Table DIM_Departement)
+  [Table   ] DIM_Devise  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Devise.Code_Devise  (parent: Table DIM_Devise)
+  [Column  ] DIM_Devise.Description  (parent: Table DIM_Devise)
+  [Column  ] DIM_Devise.Date_Fin  (parent: Table DIM_Devise)
+  [Column  ] DIM_Devise.Taux_Change  (parent: Table DIM_Devise)
+  [Table   ] DIM_Domaine  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Domaine.Code_Domaine  (parent: Table DIM_Domaine)
+  [Column  ] DIM_Domaine.Description  (parent: Table DIM_Domaine)
+  [Column  ] DIM_Domaine.Type_Domaine  (parent: Table DIM_Domaine)
+  [Table   ] DIM_Famille_Article  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Famille_Article.Code_Famille  (parent: Table DIM_Famille_Article)
+  [Column  ] DIM_Famille_Article.Description  (parent: Table DIM_Famille_Article)
+  [Table   ] DIM_Fournisseur  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Fournisseur.Code_Fournisseur  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Nom_Fournisseur  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Num_Telephone  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Pays  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Ville  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Etat  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Contact  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Devise  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Remarque  (parent: Table DIM_Fournisseur)
+  [Column  ] DIM_Fournisseur.Type  (parent: Table DIM_Fournisseur)
+  [Table   ] DIM_Gamme  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Gamme.Code_Gamme  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Operation  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Description_Oper  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Machine  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Date_Debut  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Date_Fin  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Centre_Charge  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Temps_Reglage  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Temps_Execution  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Equipe_Reglage  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Equipe_Execution  (parent: Table DIM_Gamme)
+  [Column  ] DIM_Gamme.Cadence  (parent: Table DIM_Gamme)
+  [Table   ] DIM_Methode_Paiement  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Methode_Paiement.Code_Methode_Paiement  (parent: Table DIM_Methode_Paiement)
+  [Column  ] DIM_Methode_Paiement.Description_Methode_Paiement  (parent: Table DIM_Methode_Paiement)
+  [Table   ] DIM_Modalite_Paiement  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Modalite_Paiement.Code_Modalite  (parent: Table DIM_Modalite_Paiement)
+  [Column  ] DIM_Modalite_Paiement.Description_Modalite  (parent: Table DIM_Modalite_Paiement)
+  [Column  ] DIM_Modalite_Paiement.Delais  (parent: Table DIM_Modalite_Paiement)
+  [Table   ] DIM_Motif_Arret_Prod  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Motif_Arret_Prod.Code_Motif  (parent: Table DIM_Motif_Arret_Prod)
+  [Column  ] DIM_Motif_Arret_Prod.Description  (parent: Table DIM_Motif_Arret_Prod)
+  [Table   ] DIM_Motif_Retard  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Motif_Retard.Code_Motif  (parent: Table DIM_Motif_Retard)
+  [Column  ] DIM_Motif_Retard.Description_Motif  (parent: Table DIM_Motif_Retard)
+  [Table   ] DIM_Motif_Retour  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Motif_Retour.Code_Motif  (parent: Table DIM_Motif_Retour)
+  [Column  ] DIM_Motif_Retour.Description_Motif  (parent: Table DIM_Motif_Retour)
+  [Table   ] DIM_Motif_Retour_Achat  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Motif_Retour_Achat.Code_Motif  (parent: Table DIM_Motif_Retour_Achat)
+  [Column  ] DIM_Motif_Retour_Achat.Description  (parent: Table DIM_Motif_Retour_Achat)
+  [Table   ] DIM_Nomenclature  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Nomenclature.Code_Nomenclature  (parent: Table DIM_Nomenclature)
+  [Column  ] DIM_Nomenclature.Compose  (parent: Table DIM_Nomenclature)
+  [Column  ] DIM_Nomenclature.Compose_Desc  (parent: Table DIM_Nomenclature)
+  [Column  ] DIM_Nomenclature.Composant  (parent: Table DIM_Nomenclature)
+  [Column  ] DIM_Nomenclature.Date_Debut  (parent: Table DIM_Nomenclature)
+  [Column  ] DIM_Nomenclature.Date_Fin  (parent: Table DIM_Nomenclature)
+  [Column  ] DIM_Nomenclature.Quantite_par  (parent: Table DIM_Nomenclature)
+  [Column  ] DIM_Nomenclature.Rebut  (parent: Table DIM_Nomenclature)
+  [Column  ] DIM_Nomenclature.Formule  (parent: Table DIM_Nomenclature)
+  [Table   ] DIM_Operations  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Operations.N_Op  (parent: Table DIM_Operations)
+  [Column  ] DIM_Operations.Operation  (parent: Table DIM_Operations)
+  [Column  ] DIM_Operations.Description  (parent: Table DIM_Operations)
+  [Column  ] DIM_Operations.Machine  (parent: Table DIM_Operations)
+  [Column  ] DIM_Operations.Centre_Charge  (parent: Table DIM_Operations)
+  [Column  ] DIM_Operations.Temps_Reglage  (parent: Table DIM_Operations)
+  [Column  ] DIM_Operations.Temps_Execution  (parent: Table DIM_Operations)
+  [Column  ] DIM_Operations.Rendement  (parent: Table DIM_Operations)
+  [Table   ] DIM_Region  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Region.Code_Region  (parent: Table DIM_Region)
+  [Column  ] DIM_Region.Code_Client  (parent: Table DIM_Region)
+  [Column  ] DIM_Region.Code_Adresse  (parent: Table DIM_Region)
+  [Column  ] DIM_Region.Adresse  (parent: Table DIM_Region)
+  [Column  ] DIM_Region.Ville  (parent: Table DIM_Region)
+  [Column  ] DIM_Region.Type_Adresse  (parent: Table DIM_Region)
+  [Column  ] DIM_Region.Pays  (parent: Table DIM_Region)
+  [Table   ] DIM_Site  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Site.Code_Site  (parent: Table DIM_Site)
+  [Column  ] DIM_Site.Description  (parent: Table DIM_Site)
+  [Column  ] DIM_Site.Status  (parent: Table DIM_Site)
+  [Table   ] DIM_Statut_Commande  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Statut_Commande.Statut  (parent: Table DIM_Statut_Commande)
+  [Column  ] DIM_Statut_Commande.Description_Statut  (parent: Table DIM_Statut_Commande)
+  [Table   ] DIM_Type_Article  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Type_Article.Code_Type_Article  (parent: Table DIM_Type_Article)
+  [Column  ] DIM_Type_Article.Description  (parent: Table DIM_Type_Article)
+  [Table   ] DIM_Type_Client  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Type_Client.Code_Type_Client  (parent: Table DIM_Type_Client)
+  [Column  ] DIM_Type_Client.Description  (parent: Table DIM_Type_Client)
+  [Table   ] DIM_Type_Fournisseur  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Type_Fournisseur.Code_Type_Fournisseur  (parent: Table DIM_Type_Fournisseur)
+  [Column  ] DIM_Type_Fournisseur.Description  (parent: Table DIM_Type_Fournisseur)
+  [Table   ] DIM_Type_Marche  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Type_Marche.Code_Type_Marche  (parent: Table DIM_Type_Marche)
+  [Column  ] DIM_Type_Marche.Description  (parent: Table DIM_Type_Marche)
+  [Table   ] DIM_Type_Transaction  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Type_Transaction.Code_Type_Transaction  (parent: Table DIM_Type_Transaction)
+  [Column  ] DIM_Type_Transaction.Description_Type_Transaction  (parent: Table DIM_Type_Transaction)
+  [Table   ] DIM_Unite_Mesure  (parent: Database TestDB_DataWarehouse)
+  [Column  ] DIM_Unite_Mesure.Code_Unite_Mesure  (parent: Table DIM_Unite_Mesure)
+  [Column  ] DIM_Unite_Mesure.Description  (parent: Table DIM_Unite_Mesure)
+  [Table   ] Dim_Unite_Production  (parent: Database TestDB_DataWarehouse)
+  [Column  ] Dim_Unite_Production.Code_Unite  (parent: Table Dim_Unite_Production)
+  [Column  ] Dim_Unite_Production.Description  (parent: Table Dim_Unite_Production)
+  [Table   ] Dim_Validite_UP  (parent: Database TestDB_DataWarehouse)
+  [Column  ] Dim_Validite_UP.Code_Article  (parent: Table Dim_Validite_UP)
+  [Column  ] Dim_Validite_UP.Unite_Production  (parent: Table Dim_Validite_UP)
+  [Column  ] Dim_Validite_UP.Date_Debut  (parent: Table Dim_Validite_UP)
+  [Column  ] Dim_Validite_UP.Date_Fin  (parent: Table Dim_Validite_UP)
+  [Table   ] FACT_Assoc_Bon_Livraison  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_Assoc_Bon_Livraison.Loading_Date  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Num_Commande  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Code_Region  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Code_Article  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Unité_Mesure  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Code_Site  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Num_Facture  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Num_BL  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Date_Livraison_BL  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Ligne_Num  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Quantité_Livrée  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Domaine  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Lot_BL  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.ID_Livraison  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Column  ] FACT_Assoc_Bon_Livraison.Date_Reception_Clt  (parent: Table FACT_Assoc_Bon_Livraison)
+  [Table   ] FACT_Assoc_Reception  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_Assoc_Reception.Num_Reception  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Num_Commande  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Code_Fournisseur  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Num_Ligne  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Code_Article  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Qte_Commandee  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Qte_reçue  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Qte_Cumul_Reçue  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Qte_Ouverte  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Date_Reception  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Date_Livraison_Frs  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Max_Date_Recep  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Max_Date_BC  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Cout_OA_Devise  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Cout_OA_TND  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Site  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Cout_Fact_Devise  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Cout_Fact_TND  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Cout_Std  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Devise  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Taux_Change  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Unite_Achat  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Conversion_Unite  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Motif_Retour  (parent: Table FACT_Assoc_Reception)
+  [Column  ] FACT_Assoc_Reception.Type_Document  (parent: Table FACT_Assoc_Reception)
+  [Table   ] FACT_Assoc_Retour  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_Assoc_Retour.Loading_Date  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Num_Commande  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Code_Client  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Prix_Unitaire  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Code_Devise  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Taux_Change  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Remise_Commande  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Num_Facture  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Ligne_Num  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Date_Retour  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Motif_Retour  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Montant_Retour  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Quantité_Retournée  (parent: Table FACT_Assoc_Retour)
+  [Column  ] FACT_Assoc_Retour.Code_Article  (parent: Table FACT_Assoc_Retour)
+  [Table   ] FACT_Commande_Client  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_Commande_Client.Loading_Date  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Transaction  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Num_Sequence  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Statut  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Num_Commande  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Code_Client  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Code_Region  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Code_Article  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Commande  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Demandee  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Echeance  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Echeance_Ligne  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Promis_Ligne  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Evaluation_Ligne  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Demandee_Ligne  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Prelevement  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Date_Confirmee  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Prix_Unitaire  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Code_Devise  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Taux_Change  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Unite_Mesure  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Remise_Commande  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Ligne_Produit  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Cout_Std_Unitaire  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Code_Site  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Ligne_Num  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Quantite_Commandee  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Total_Quantite_Facturee  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Total_Quantite_Livree  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Quantite_Ouverte  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Total_Quantite_Retournee  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Montant_Commande  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Total_Montant_Facture  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Total_Montant_Livree  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Total_Montant_Retour  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Domaine  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Type_Commande  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.So_Flag  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Statut_Final  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Max_Date_Confirmee  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Max_Date_Livraison  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Max_Date_Promis  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Nombre_Jour  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Is_Max_Num_seq  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Max_Date_Reception_Client  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Max_Date_Echeance_Ligne  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Max_Date_Demandee_Ligne  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Statut_Final_Commande  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Statut_Livraison  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Visibilite  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Check  (parent: Table FACT_Commande_Client)
+  [Column  ] FACT_Commande_Client.Code_Motif_Retard  (parent: Table FACT_Commande_Client)
+  [Table   ] FACT_Ordre_Achat  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_Ordre_Achat.Num_Commande  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Code_Fournisseur  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Acheteur  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Num_Ligne  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Statut  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Num_DA  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Code_Article  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Qte_Commandee  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Qte_reçue  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Qte_Ouverte  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Date_Commande  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Date_Ech_Ligne  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Date_Eval_Ligne  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Date_Besoin_Ligne  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Date_Cloture  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Cout_Achat  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Cout_Std  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Remise  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Devise  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Taux_Change  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Unite_Mesure  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Conversion_Unite  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Unite_Remplacement  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Statut_Ordre  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Remarque  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Site  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Credit_Terms  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Credit_Desc  (parent: Table FACT_Ordre_Achat)
+  [Column  ] FACT_Ordre_Achat.Credit_Jours  (parent: Table FACT_Ordre_Achat)
+  [Table   ] FACT_PROD_Arret  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_PROD_Arret.N_OF  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.N_ID  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Code_Article_OF  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Departement  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Date_Debut  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Date_Fin  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Heure_Debut  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Heure_Fin  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.N_Operation  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Centre_Charge  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Machine  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Exec_Std  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Duree  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Code_Motif  (parent: Table FACT_PROD_Arret)
+  [Column  ] FACT_PROD_Arret.Date_Chargement  (parent: Table FACT_PROD_Arret)
+  [Table   ] FACT_PROD_Consommation  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_PROD_Consommation.N_OF  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.N_ID  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Statut  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Code_Article_OF  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_Commandee  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_Theorique  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_Terminee  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Ecart_OF  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Date_Creation  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Date_Lancement  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Date_Echeance  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Date_Reçu  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Date_Cloture  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Duree_OF  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Code_Gamme  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Code_Nomenclature  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Rendement  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Code_Article  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Description  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Unite  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Famille_Article  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Unite_Prod  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Date_Sortie  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_Demandee  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_Demandee_Calc  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_Allouee  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_prelevee  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_A_Sortir  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Qte_Sortie  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Formule  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Coef_Nomenc  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Cout_Matiere  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Cout_Std_Tot_Reel  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Visibilite  (parent: Table FACT_PROD_Consommation)
+  [Column  ] FACT_PROD_Consommation.Dernier_Produit_OF  (parent: Table FACT_PROD_Consommation)
+  [Table   ] FACT_PROD_Declaration  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_PROD_Declaration.N_OF  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.N_ID  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Statut  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Code_Article_OF  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.N_OP  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Desc_Op  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Centre_Charge  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Machine  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Temps_Regl_Std  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Temps_Exec_Unit_Std  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Temps_Exec_Std  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Temps_Regl_Reel  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Temps_Exec_Reel  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Qte_Commandee  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Qte_Terminee  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Qte_Rejetee  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Date_Demarrage  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Date_Echeance  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.%Rendement  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Cout_FGV_Std  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Cout_FGV_Reel  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Cout_MO_Std  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Cout_MO_Reel  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Equipe_Reglage  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Equipe_Execution  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Taux_MO  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Taux_FGV_MO  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Taux_Machine_FGV  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Visibilite  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Departement  (parent: Table FACT_PROD_Declaration)
+  [Column  ] FACT_PROD_Declaration.Duree_Arret  (parent: Table FACT_PROD_Declaration)
+  [Table   ] Fact_Prod_Stocks  (parent: Database TestDB_DataWarehouse)
+  [Column  ] Fact_Prod_Stocks.Article  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Description  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.UM  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Type  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.statut  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Num_Lot  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Domain  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Emplacement  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Date_Exp  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Reference  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Site  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.In_Qty_Oh  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Ld_Qty_Oh  (parent: Table Fact_Prod_Stocks)
+  [Column  ] Fact_Prod_Stocks.Date_Importe  (parent: Table Fact_Prod_Stocks)
+  [Table   ] FACT_PROD_Valorisation  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_PROD_Valorisation.N_OF  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Code_Article  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Qte_Terminee_Cons_AVG  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Qte_Terminee_Cons_MINMAX  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Valeur_Cons  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Nbr_20_Cons  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Qte_Terminee_Decl_AVG  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Qte_Terminee_Decl_MINMAX  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Valeur_Decl  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Valeur_MO  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Valeur_FGV  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Nbr_20_Decl  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Visibilite  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Date_Lancement  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Cout_Std  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Cout_Std_MO  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Cout_Std_FGV  (parent: Table FACT_PROD_Valorisation)
+  [Column  ] FACT_PROD_Valorisation.Cout_Std_Matiere  (parent: Table FACT_PROD_Valorisation)
+  [Table   ] FACT_Recouvrement_Client  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_Recouvrement_Client.Loading_Date  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Code_Type_Transaction  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Statut  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Designation  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Num_Document  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Situation  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Code_Client  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Code_Payant  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Code_Region  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Date_Effet  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Date_Echeance  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Nombre_Jour  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Date_Paiement  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Code_Modalite_Paiement  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Code_Methode_Paiement  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Code_Devise  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Taux_Change  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Montant_Total  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Montant_Regle  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Montant_Ouvert  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Ouvert  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Montant_Total_TND  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Montant_Regle_TND  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Montant_Ouvert_TND  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Type_Operation  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Banque  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Num_Cheque  (parent: Table FACT_Recouvrement_Client)
+  [Column  ] FACT_Recouvrement_Client.Date  (parent: Table FACT_Recouvrement_Client)
+  [Table   ] FACT_Serial  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_Serial.Code_Client  (parent: Table FACT_Serial)
+  [Column  ] FACT_Serial.Num_Facture  (parent: Table FACT_Serial)
+  [Column  ] FACT_Serial.Date_Facture  (parent: Table FACT_Serial)
+  [Column  ] FACT_Serial.Code_Article  (parent: Table FACT_Serial)
+  [Column  ] FACT_Serial.Lot_Article  (parent: Table FACT_Serial)
+  [Table   ] FACT_Vente  (parent: Database TestDB_DataWarehouse)
+  [Column  ] FACT_Vente.Loading_date  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Code_Client  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Code_Region  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Num_Facture  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Date_Facture  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Num_Commande  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Ligne_Num  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Num_Commande_Clt  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Code_Article  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Lot_Article  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Unite_Mesure  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Code_Site  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Code_Domaine  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Code_Devise  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Prix_Unitaire  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Cout_Std_Unitaire  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Quantité  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Remise_Ligne  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Remise_Facture  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Cout_Std_TND  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.CA_TND  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Marge_STD  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.CA_Devise_Ope  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Taux_Change  (parent: Table FACT_Vente)
+  [Column  ] FACT_Vente.Type_Document  (parent: Table FACT_Vente)
+  [Table   ] SEC_Role  (parent: Database TestDB_DataWarehouse)
+  [Column  ] SEC_Role.RoleId  (parent: Table SEC_Role)
+  [Column  ] SEC_Role.NomRole  (parent: Table SEC_Role)
+  [Column  ] SEC_Role.Description  (parent: Table SEC_Role)
+  [Table   ] SEC_Role_Colonne_Masquee  (parent: Database TestDB_DataWarehouse)
+  [Column  ] SEC_Role_Colonne_Masquee.RoleId  (parent: Table SEC_Role_Colonne_Masquee)
+  [Column  ] SEC_Role_Colonne_Masquee.NomTable  (parent: Table SEC_Role_Colonne_Masquee)
+  [Column  ] SEC_Role_Colonne_Masquee.NomColonne  (parent: Table SEC_Role_Colonne_Masquee)
+  [Table   ] SEC_Role_Table_Acces  (parent: Database TestDB_DataWarehouse)
+  [Column  ] SEC_Role_Table_Acces.RoleId  (parent: Table SEC_Role_Table_Acces)
+  [Column  ] SEC_Role_Table_Acces.NomTable  (parent: Table SEC_Role_Table_Acces)
+  [Column  ] SEC_Role_Table_Acces.NiveauAcces  (parent: Table SEC_Role_Table_Acces)
+  [Column  ] SEC_Role_Table_Acces.FiltreLigne  (parent: Table SEC_Role_Table_Acces)
+  [Table   ] SEC_Utilisateur  (parent: Database TestDB_DataWarehouse)
+  [Column  ] SEC_Utilisateur.UserId  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.Login  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.NomComplet  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.Email  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.RoleId  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.CodeSite  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.CodeRegion  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.MotDePasseHash  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.Actif  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.DateCreation  (parent: Table SEC_Utilisateur)
+  [Column  ] SEC_Utilisateur.DateDerniereConnexion  (parent: Table SEC_Utilisateur)
+  [Term    ] Client
+  [Term    ] Classe client
+  [Term    ] Type de client
+  [Term    ] Marche / segment de vente
+  [Term    ] Region / adresse client
+  [Term    ] Article / produit
+  [Term    ] Famille d'article
+  [Term    ] Type d'article
+  [Term    ] Unite de mesure
+  [Term    ] Unite de production
+  [Term    ] Validite d'une unite de production
+  [Term    ] Cout de revient d'un article
+  [Term    ] Fournisseur
+  [Term    ] Type de fournisseur
+  [Term    ] Ordre d'achat
+  [Term    ] Reception fournisseur
+  [Term    ] Devise
+  [Term    ] Taux de change
+  [Term    ] Chiffre d'affaires (CA)
+  [Term    ] Site
+  [Term    ] Departement (production)
+  [Term    ] Domaine commercial
+  [Term    ] Centre de charge
+  [Term    ] Gamme de fabrication
+  [Term    ] Operation (referentiel production)
+  [Term    ] Nomenclature
+  [Term    ] Ordre de fabrication (OF)
+  [Term    ] Consommation matiere (production)
+  [Term    ] Declaration de production
+  [Term    ] Arret de production
+  [Term    ] Motif d'arret de production
+  [Term    ] Valorisation de production
+  [Term    ] Rendement de production
+  [Term    ] Stock
+  [Term    ] Vente / facturation
+  [Term    ] Commande client
+  [Term    ] Statut de commande
+  [Term    ] Bon de livraison
+  [Term    ] Retour client
+  [Term    ] Motif de retour (vente)
+  [Term    ] Motif de retour (achat)
+  [Term    ] Motif de retard
+  [Term    ] Numero de serie / lot vendu
+  [Term    ] Recouvrement client / creance
+  [Term    ] Agregat de recouvrement
+  [Term    ] Agregat de commande
+  [Term    ] Methode de paiement
+  [Term    ] Modalite de paiement
+  [Term    ] Type de transaction financiere
+  [Term    ] Calendrier / date
+  [Term    ] Grain de la donnee
+  [Term    ] Homonymie de colonnes cles
+  [Task    ] Quel est le chiffre d'affaires total en TND ?
+  [Task    ] Quel est le CA total par client ?
+  [Task    ] Quel est le chiffre d'affaires par mois pour l'annee 2025 ?
+  [Task    ] Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?
+  [Task    ] Quel est le CA moyen par ligne de vente et par facture ?
+  [Task    ] Quels sont les 5 articles les plus vendus en chiffre d'affaires ?
+  [Task    ] Quel est l'article le plus vendu en CA dans chaque region ?
+  [Task    ] Quel est le prix de vente moyen par type d'article ?
+  [Task    ] Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?
+  [Task    ] Quels clients ont un montant moyen de facture superieur a 5000 TND ?
+  [Task    ] Quel est le lot vendu pour la facture 'FAC0010' ?
+  [Task    ] Quels sont les statuts de commande possibles ?
+  [Task    ] Quelles commandes sont encore au statut 'En cours' ?
+  [Task    ] Quel est le montant total facture par commande ?
+  [Task    ] Quelles lignes de commande ont un ecart entre quantite commandee et quantite livree ?
+  [Task    ] Quel est le nombre de bons de livraison par site ?
+  [Task    ] Quelles commandes n'ont jamais ete livrees ?
+  [Task    ] Quel est le montant total des retours clients par motif ?
+  [Task    ] Quels sont les motifs de retour client existants ?
+  [Task    ] Quels sont les motifs de retour fournisseur existants ?
+  [Task    ] Quels sont les motifs de retard existants ?
+  [Task    ] Quel est le montant total impaye par client ?
+  [Task    ] Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?
+  [Task    ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?
+  [Task    ] Quels sont les modalites de paiement disponibles et leurs delais ?
+  [Task    ] Quelles sont les methodes de paiement disponibles ?
+  [Task    ] Quels sont les types de transaction financiere existants ?
+  [Task    ] Quel est le delai moyen en jours entre commande et reception fournisseur ?
+  [Task    ] Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?
+  [Task    ] Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?
+  [Task    ] Quel est le taux de change actuel de l'euro ?
+  [Task    ] Quels sont les sites actifs ?
+  [Task    ] Quelle est la capacite machine de chaque departement ?
+  [Task    ] Quels domaines commerciaux sont de type export ?
+  [Task    ] Quelle est la ville et le pays de chaque client ?
+  [Task    ] Quel est le taux d'utilisation moyen par centre de charge ?
+  [Task    ] Quelles sont les operations de la gamme 'GAM0001', triees par temps d'execution ?
+  [Task    ] Quel est le rendement theorique de chaque operation de production ?
+  [Task    ] Quelle est la composition (nomenclature) de l'article 'NOM0001' ?
+  [Task    ] Quel est le motif d'arret de production le plus frequent ?
+  [Task    ] Quelle est la duree totale d'arret de production par machine ?
+  [Task    ] Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?
+  [Task    ] Quel est le taux de rejet moyen par centre de charge en declaration de production ?
+  [Task    ] Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?
+  [Task    ] Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?
+  [Task    ] Quel est le stock disponible total par site ?
+  [Task    ] Quels lots arrivent a peremption dans les 30 prochains jours ?
+  [Task    ] Quelle est la periode de validite de chaque unite de production par article ?

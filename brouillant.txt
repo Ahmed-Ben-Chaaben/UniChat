@@ -1,0 +1,20 @@
+
+##Commandes
+install:
+
+pip install -r requirements.txt
+bash scripts/02_start_qdrant.sh
+bash scripts/03_pull_llm.sh
+
+
+exporter tous les variables d'environnement 
+export EMBEDDING_MODEL="BAAI/bge-m3"
+
+
+check the database connectivity
+
+run: 
+streamlit run app_new.py
+
+
+i want to see the evolution of the revenu in the last three years

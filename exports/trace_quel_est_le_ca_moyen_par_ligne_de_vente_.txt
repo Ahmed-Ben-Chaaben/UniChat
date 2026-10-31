@@ -1,0 +1,174 @@
+========================================================================
+TRAÇAGE DU RETRIEVAL — comment le programme extrait les données
+========================================================================
+Question : Quel est le CA moyen par ligne de vente et par facture ?
+Paramètres : coarse_k=30 (candidats/méthode), fine_k=16 (gardés)
+Reranker actif : False
+Méthode de scoring active : paper
+  (ALPHA=1.0, BETA=0.0 pour la méthode 'paper')
+
+── ÉTAPE 1 — MOTS-CLÉS EXTRAITS (tokenisation) ──
+  ['quel', 'est', 'le', 'ca', 'moyen', 'par', 'ligne', 'de', 'vente', 'et', 'par', 'facture', '?']
+  (13 tokens : minuscules, '.' et '|' remplacés par espaces)
+
+── ÉTAPE 2 — RECHERCHE VECTORIELLE (similarité sémantique bge-m3) ──
+  Vecteur question : dimension 1024 (bge-m3)
+  Top 30 par similarité sémantique :
+     1. [Term   ] Vente / facturation   (score=0.6032)
+     2. [Task   ] Quels clients ont un montant moyen de facture superieur a 5000 TND ?   (score=0.5874)
+     3. [Task   ] Quel est le CA total par client ?   (score=0.5550)
+     4. [Task   ] Quel est le montant total facture par commande ?   (score=0.5199)
+     5. [Term   ] Commande client   (score=0.5135)
+     6. [Term   ] Numero de serie / lot vendu   (score=0.5111)
+     7. [Task   ] Quel est le lot vendu pour la facture 'FAC0010' ?   (score=0.4983)
+     8. [Task   ] Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?   (score=0.4925)
+     9. [Task   ] Quel est le chiffre d'affaires par mois pour l'annee 2025 ?   (score=0.4782)
+    10. [Task   ] Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?   (score=0.4778)
+    11. [Term   ] Chiffre d'affaires (CA)   (score=0.4742)
+    12. [Task   ] Quel est le taux de rejet moyen par centre de charge en declaration de production ?   (score=0.4720)
+    13. [Task   ] Quel est le prix de vente moyen par type d'article ?   (score=0.4596)
+    14. [Table  ] FACT_Vente   (score=0.4551)
+    15. [Task   ] Quel est l'article le plus vendu en CA dans chaque region ?   (score=0.4535)
+    16. [Column ] FACT_Commande_Client.Total_Montant_Facture   (score=0.4531)
+    17. [Term   ] Ordre d'achat   (score=0.4522)
+    18. [Task   ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?   (score=0.4520)
+    19. [Task   ] Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?   (score=0.4508)
+    20. [Table  ] FACT_Recouvrement_Client   (score=0.4433)
+    21. [Table  ] FACT_Ordre_Achat   (score=0.4402)
+    22. [Task   ] Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?   (score=0.4394)
+    23. [Task   ] Quel est le chiffre d'affaires total en TND ?   (score=0.4388)
+    24. [Table  ] FACT_PROD_Consommation   (score=0.4374)
+    25. [Term   ] Bon de livraison   (score=0.4373)
+    26. [Task   ] Quels sont les 5 articles les plus vendus en chiffre d'affaires ?   (score=0.4360)
+    27. [Task   ] Quel est le taux d'utilisation moyen par centre de charge ?   (score=0.4347)
+    28. [Table  ] FACT_Commande_Client   (score=0.4347)
+    29. [Term   ] Centre de charge   (score=0.4340)
+    30. [Term   ] Ordre de fabrication (OF)   (score=0.4316)
+
+── ÉTAPE 3 — RECHERCHE LEXICALE (BM25, correspondance de mots) ──
+  Top 30 par score BM25 :
+     1. [Task   ] Quel est le prix de vente moyen par type d'article ?   (bm25=32.700) score_norm=1.000
+     2. [Task   ] Quel est le CA total par client ?   (bm25=27.721) score_norm=0.848
+     3. [Task   ] Quel est le taux d'utilisation moyen par centre de charge ?   (bm25=26.703) score_norm=0.817
+     4. [Task   ] Quel est le montant total facture par commande ?   (bm25=26.688) score_norm=0.816
+     5. [Task   ] Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?   (bm25=23.149) score_norm=0.708
+     6. [Task   ] Quel est le nombre de bons de livraison par site ?   (bm25=22.012) score_norm=0.673
+     7. [Task   ] Quel est le stock disponible total par site ?   (bm25=20.914) score_norm=0.640
+     8. [Task   ] Quel est le chiffre d'affaires par mois pour l'annee 2025 ?   (bm25=20.735) score_norm=0.634
+     9. [Task   ] Quel est le taux de rejet moyen par centre de charge en declaration de production ?   (bm25=20.148) score_norm=0.616
+    10. [Task   ] Quel est le montant total des retours clients par motif ?   (bm25=19.829) score_norm=0.606
+    11. [Task   ] Quel est le montant total impaye par client ?   (bm25=19.829) score_norm=0.606
+    12. [Task   ] Quel est le lot vendu pour la facture 'FAC0010' ?   (bm25=19.290) score_norm=0.590
+    13. [Term   ] Vente / facturation   (bm25=18.519) score_norm=0.566
+    14. [Task   ] Quel est le delai moyen en jours entre commande et reception fournisseur ?   (bm25=18.083) score_norm=0.553
+    15. [Task   ] Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?   (bm25=18.045) score_norm=0.552
+    16. [Task   ] Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?   (bm25=17.705) score_norm=0.541
+    17. [Task   ] Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?   (bm25=17.682) score_norm=0.541
+    18. [Task   ] Quel est le taux de change actuel de l'euro ?   (bm25=16.043) score_norm=0.491
+    19. [Task   ] Quel est le rendement theorique de chaque operation de production ?   (bm25=15.248) score_norm=0.466
+    20. [Task   ] Quel est le chiffre d'affaires total en TND ?   (bm25=14.577) score_norm=0.446
+    21. [Task   ] Quel est l'article le plus vendu en CA dans chaque region ?   (bm25=14.557) score_norm=0.445
+    22. [Task   ] Quelle est la periode de validite de chaque unite de production par article ?   (bm25=14.465) score_norm=0.442
+    23. [Task   ] Quelle est la ville et le pays de chaque client ?   (bm25=13.462) score_norm=0.412
+    24. [Task   ] Quelle est la duree totale d'arret de production par machine ?   (bm25=13.391) score_norm=0.410
+    25. [Task   ] Quel est le cout matiere le plus recent de chaque article ?   (bm25=13.293) score_norm=0.407
+    26. [Term   ] Numero de serie / lot vendu   (bm25=12.975) score_norm=0.397
+    27. [Task   ] Quels clients ont un montant moyen de facture superieur a 5000 TND ?   (bm25=12.894) score_norm=0.394
+    28. [Task   ] Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?   (bm25=12.762) score_norm=0.390
+    29. [Task   ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?   (bm25=12.762) score_norm=0.390
+    30. [Task   ] Quel est le motif d'arret de production le plus frequent ?   (bm25=12.678) score_norm=0.388
+
+── ÉTAPE 4 — FUSION (union vectoriel + lexical) ──
+  46 candidats uniques après fusion
+  - présents dans LES DEUX méthodes : ['Numero de serie / lot vendu', "Quel est l'article le plus vendu en CA dans chaque region ?", 'Quel est le CA total par client ?', "Quel est le chiffre d'affaires par mois pour l'annee 2025 ?", "Quel est le chiffre d'affaires total en TND ?", "Quel est le lot vendu pour la facture 'FAC0010' ?", 'Quel est le montant total facture par commande ?', "Quel est le prix de vente moyen par type d'article ?", "Quel est le taux d'utilisation moyen par centre de charge ?", 'Quel est le taux de rejet moyen par centre de charge en declaration de production ?', "Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?", "Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?", 'Quels clients ont un montant moyen de facture superieur a 5000 TND ?', 'Vente / facturation']
+  - vectoriel seulement : ['Bon de livraison', 'Centre de charge', "Chiffre d'affaires (CA)", 'Commande client', 'FACT_Commande_Client', 'FACT_Commande_Client.Total_Montant_Facture', 'FACT_Ordre_Achat', 'FACT_PROD_Consommation', 'FACT_Recouvrement_Client', 'FACT_Vente', "Ordre d'achat", 'Ordre de fabrication (OF)', "Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?", "Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?", 'Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?', "Quels sont les 5 articles les plus vendus en chiffre d'affaires ?"]
+  - BM25 seulement      : ["Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?", 'Quel est le cout matiere le plus recent de chaque article ?', 'Quel est le delai moyen en jours entre commande et reception fournisseur ?', 'Quel est le montant total des retours clients par motif ?', 'Quel est le montant total impaye par client ?', "Quel est le motif d'arret de production le plus frequent ?", 'Quel est le nombre de bons de livraison par site ?', 'Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?', 'Quel est le rendement theorique de chaque operation de production ?', 'Quel est le stock disponible total par site ?', "Quel est le taux de change actuel de l'euro ?", "Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?", "Quelle est la duree totale d'arret de production par machine ?", 'Quelle est la periode de validite de chaque unite de production par article ?', 'Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?', 'Quelle est la ville et le pays de chaque client ?']
+
+── ÉTAPE 5 — MULTI-HOP (traversée des ancêtres via anc_name) ──
+  47 candidats après multi-hop (+1 ancêtres)
+    + Chinook
+
+── ÉTAPE 6 — SCORE PAPIER : Score(t) = Sim(t) + α·Embed(t) + β·Heat(t) ──
+  (calculé pour TOUS les candidats fusionnés, indépendamment de la
+   méthode active — sert à régler ALPHA/BETA dans config.py)
+
+   rg  entrée                             Sim(t)   Embed  α·Embed   Heat  β·Heat    Score
+  ---------------------------------------------------------------------------------------
+    1  Vente / facturation                1.7339   1.000   1.0000  0.000  0.0000   2.7339
+    2  Quel est le CA total par client    1.9806   0.719   0.7189  0.000  0.0000   2.6994
+    3  Quels clients ont un montant moy   1.3378   0.908   0.9078  0.000  0.0000   2.2455
+    4  Quel est le montant total factur   1.4727   0.515   0.5148  0.000  0.0000   1.9875
+    5  Quel est le prix de vente moyen    1.6468   0.163   0.1634  0.000  0.0000   1.8102
+    6  Numero de serie / lot vendu        1.2568   0.463   0.4631  0.000  0.0000   1.7199
+    7  Quel est le chiffre d'affaires p   1.4237   0.271   0.2713  0.000  0.0000   1.6950
+    8  Quel est le lot vendu pour la fa   1.2742   0.388   0.3885  0.000  0.0000   1.6627
+    9  Chiffre d'affaires (CA)            1.3420   0.248   0.2485  0.000  0.0000   1.5905
+   10  Quelle est la valeur de consomma   1.2813   0.269   0.2693  0.000  0.0000   1.5507
+   11  Quel est le cumul du chiffre d'a   1.1361   0.355   0.3551  0.000  0.0000   1.4913
+   12  Commande client                    0.9882   0.478   0.4776  0.000  0.0000   1.4658
+   13  Quelle est la periode de validit   1.4096   0.000   0.0000  0.000  0.0000   1.4096
+   14  Quelle est la duree totale d'arr   1.3826   0.000   0.0000  0.000  0.0000   1.3826
+   15  Quel est le nombre de bons de li   1.3538   0.000   0.0000  0.000  0.0000   1.3538
+   16  Quel est le taux de rejet moyen    1.1115   0.236   0.2356  0.000  0.0000   1.3470
+   17  Quelle est la quantite theorique   1.3462   0.000   0.0000  0.000  0.0000   1.3462
+   18  Quelle est la ville et le pays d   1.3179   0.000   0.0000  0.000  0.0000   1.3179
+   19  Quel est l'article le plus vendu   1.1840   0.127   0.1274  0.000  0.0000   1.3114
+   20  Quelle est la quantite totale co   1.1587   0.119   0.1190  0.000  0.0000   1.2777
+   21  Quel est le taux d'utilisation m   1.2552   0.018   0.0180  0.000  0.0000   1.2732
+   22  Quel est le taux de change actue   1.2618   0.000   0.0000  0.000  0.0000   1.2618
+   23  Quel est le montant total impaye   1.2458   0.000   0.0000  0.000  0.0000   1.2458
+   24  Quel est le chiffre d'affaires t   1.2012   0.042   0.0420  0.000  0.0000   1.2433
+   25  Quel est le cout matiere le plus   1.2285   0.000   0.0000  0.000  0.0000   1.2285
+   26  Quel est le nombre de receptions   1.2114   0.000   0.0000  0.000  0.0000   1.2114
+   27  Quel est l'ecart entre le cout s   1.2025   0.000   0.0000  0.000  0.0000   1.2025
+   28  Quelle est la repartition du chi   1.1367   0.046   0.0456  0.000  0.0000   1.1823
+   29  Quels sont les 5 articles les pl   1.1171   0.026   0.0258  0.000  0.0000   1.1429
+   30  Quel est le delai moyen en jours   1.1361   0.000   0.0000  0.000  0.0000   1.1361
+   31  Quel est le rendement theorique    1.0526   0.000   0.0000  0.000  0.0000   1.0526
+   32  Quelle est la creance totale par   1.0042   0.000   0.0000  0.000  0.0000   1.0042
+   33  Quel est le montant total des re   1.0000   0.000   0.0000  0.000  0.0000   1.0000
+   34  Quels fournisseurs ont livre en    0.8814   0.112   0.1116  0.000  0.0000   0.9930
+   35  Quel est le stock disponible tot   0.9847   0.000   0.0000  0.000  0.0000   0.9847
+   36  FACT_Commande_Client.Total_Monta   0.8252   0.125   0.1253  0.000  0.0000   0.9504
+   37  Quel est le motif d'arret de pro   0.9217   0.000   0.0000  0.000  0.0000   0.9217
+   38  Centre de charge                   0.8425   0.014   0.0141  0.000  0.0000   0.8566
+   39  FACT_Vente                         0.5834   0.137   0.1369  0.000  0.0000   0.7203
+   40  Ordre de fabrication (OF)          0.6731   0.000   0.0000  0.000  0.0000   0.6731
+   41  Ordre d'achat                      0.4954   0.120   0.1198  0.000  0.0000   0.6152
+   42  FACT_Ordre_Achat                   0.4764   0.050   0.0501  0.000  0.0000   0.5265
+   43  FACT_Recouvrement_Client           0.4546   0.068   0.0682  0.000  0.0000   0.5228
+   44  Bon de livraison                   0.4843   0.033   0.0331  0.000  0.0000   0.5174
+   45  FACT_Commande_Client               0.4917   0.018   0.0180  0.000  0.0000   0.5096
+   46  FACT_PROD_Consommation             0.3747   0.034   0.0339  0.000  0.0000   0.4086
+   47  Chinook                            0.3264   0.000   0.0000  0.000  0.0000   0.3264
+
+  Lecture pour régler les hyperparamètres :
+  - Sim(t) domine et écrase les autres termes -> baisser α et/ou β,
+    ou vérifier que payload['columns'] est bien peuplé (sinon Sim(t)
+    retombe sur un repli à 1 seul champ, moins discriminant).
+  - Un candidat pertinent classé bas malgré un bon Embed(t) -> monter α.
+  - Heat(t) fait remonter des tables populaires mais hors-sujet -> baisser β.
+
+── ÉTAPE 7 — CLASSEMENT FINAL (méthode active) ──
+
+  16 entrées retenues (fine_k=16) :
+     1. Term Vente / facturation
+     2. Task Quel est le CA total par client ?
+     3. Task Quels clients ont un montant moyen de facture superieur a 5000 TND ?
+     4. Task Quel est le montant total facture par commande ?
+     5. Task Quel est le prix de vente moyen par type d'article ?
+     6. Term Numero de serie / lot vendu
+     7. Task Quel est le chiffre d'affaires par mois pour l'annee 2025 ?
+     8. Task Quel est le lot vendu pour la facture 'FAC0010' ?
+     9. Term Chiffre d'affaires (CA)
+    10. Task Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?
+    11. Task Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?
+    12. Term Commande client
+    13. Task Quelle est la periode de validite de chaque unite de production par article ?
+    14. Task Quelle est la duree totale d'arret de production par machine ?
+    15. Task Quel est le nombre de bons de livraison par site ?
+    16. Task Quel est le taux de rejet moyen par centre de charge en declaration de production ?
+
+── SYNTHÈSE : tables & colonnes comprises au final ──
+  Tables  : (aucune)
+  Colonnes: (aucune)

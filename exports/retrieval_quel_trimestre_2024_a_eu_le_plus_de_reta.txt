@@ -1,0 +1,47 @@
+======================================================================
+INSPECTION DU RETRIEVAL — ce que le modèle a remonté comme contexte
+======================================================================
+Question : Quel trimestre 2024 a eu le plus de retards de paiement clients  ?
+Entrées remontées : 16 (ordre = pertinence décroissante)
+
+── PILE ORDONNÉE (16) ──
+   1. [Column  ] FACT_Recouvrement_Client.Date_Paiement  ⟵ Table FACT_Recouvrement_Client
+   2. [Term    ] Motif de retard
+   3. [Task    ] Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?
+   4. [Task    ] Quels sont les modalites de paiement disponibles et leurs delais ?
+   5. [Term    ] Recouvrement client / creance
+   6. [Term    ] Modalite de paiement
+   7. [Column  ] FACT_Commande_Client.Max_Date_Livraison  ⟵ Table FACT_Commande_Client
+   8. [Task    ] Quel est le cout matiere le plus recent de chaque article ?
+   9. [Column  ] DIM_Centre_Charge.Taux_Rendement  ⟵ Table DIM_Centre_Charge
+  10. [Task    ] Combien de clients sont enregistres dans la base ?
+  11. [Task    ] Quelles sont les methodes de paiement disponibles ?
+  12. [Term    ] Agregat de recouvrement
+  13. [Task    ] Quel est le CA total par client ?
+  14. [Term    ] Methode de paiement
+  15. [Column  ] AGG_Recouvrement_Client.En_Cours_Client  ⟵ Table AGG_Recouvrement_Client
+  16. [Column  ] FACT_Recouvrement_Client.Code_Methode_Paiement  ⟵ Table FACT_Recouvrement_Client
+
+── TABLES comprises (0) ──
+
+── COLONNES comprises (5) ──
+  • FACT_Recouvrement_Client.Date_Paiement  (DATETIME)
+  • FACT_Commande_Client.Max_Date_Livraison  (DATETIME)
+  • DIM_Centre_Charge.Taux_Rendement  (DECIMAL(18, 2))
+  • AGG_Recouvrement_Client.En_Cours_Client  (DECIMAL(18, 2))
+  • FACT_Recouvrement_Client.Code_Methode_Paiement  (NVARCHAR(30) COLLATE "French_CI_AS")
+
+── TERMES MÉTIER mobilisés (5) ──
+  • Motif de retard : DIM_Motif_Retard liste les motifs de retard (Code_Motif, Description_Motif) ; FACT_Commande_Client.Code_Motif_Retard n'a pas de contrainte FK declaree en base (a relier par convention de nom). (aussi appele : cause de retard de commande)
+  • Recouvrement client / creance : FACT_Recouvrement_Client suit les documents de recouvrement client : Num_Document (PK), Code_Client, Montant_Total, Montant_Regle, Montant_Ouvert, Ouvert (bit : 1 = encore ouvert), Date_Echeance, Date_Paiement. (aussi appele : impaye, encaissement, reglement)
+  • Modalite de paiement : DIM_Modalite_Paiement liste les modalites de paiement (Code_Modalite, Description_Modalite, Delais). (aussi appele : conditions de paiement, delai de paiement)
+  • Agregat de recouvrement : AGG_Recouvrement_Client est un agregat mensuel deja calcule par client : Annee, Mois, Code_Client, Creance_Client, Total_Recouvrement, En_Cours_Client, Total_Impaye, CA_TTC — ne pas re-sommer comme si c'etait du detail (piege du grain). (aussi appele : creance mensuelle par client, en-cours)
+  • Methode de paiement : DIM_Methode_Paiement liste les methodes de paiement (Code_Methode_Paiement, Description_Methode_Paiement). (aussi appele : moyen de paiement)
+
+── EXEMPLES (démonstrations) mobilisés (6) ──
+  • Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ? -> SELECT Code_Fournisseur, COUNT(*) AS Nb_Lignes, AVG(1.0 * [Qte_reçue] / NULLIF(Qte_Commandee, 0)) AS Taux_Livraison FROM FACT_Ordre_Achat GROUP BY Code_Fournisseur HAVING COUNT(*) > 5 AND AVG(1.0 * [Qte_reçue] / NULLIF(Qte_Commandee, 0)) < 0.90;
+  • Quels sont les modalites de paiement disponibles et leurs delais ? -> SELECT Code_Modalite, Description_Modalite, Delais FROM DIM_Modalite_Paiement;
+  • Quel est le cout matiere le plus recent de chaque article ? -> SELECT Code_Article, Cout_Matiere, Date_Changement FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY Code_Article ORDER BY Date_Changement DESC) AS rn FROM DIM_Cout_Article) t WHERE rn = 1;
+  • Combien de clients sont enregistres dans la base ? -> SELECT COUNT(*) AS Nb_Clients FROM DIM_Client;
+  • Quelles sont les methodes de paiement disponibles ? -> SELECT Code_Methode_Paiement, Description_Methode_Paiement FROM DIM_Methode_Paiement;
+  • Quel est le CA total par client ? -> SELECT Code_Client, SUM(CA_TND) AS CA FROM FACT_Vente GROUP BY Code_Client ORDER BY CA DESC;

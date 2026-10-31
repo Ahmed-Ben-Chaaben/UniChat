@@ -1,0 +1,171 @@
+{
+  "summary": {
+    "avg_response_time_s": 33.32,
+    "uex_pct": 6.2,
+    "kr_recall_pct": 25.0,
+    "sl_recall_pct": 51.0,
+    "n_questions": 16
+  },
+  "details": [
+    {
+      "id": "u1",
+      "question": "Quel est le chiffre d'affaires total en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 109.33,
+      "uex": false,
+      "sl_recall": 1.0,
+      "kr_recall": 0.333,
+      "generated_sql": "SELECT \n    2024 AS Annee_Filtre, \n    SUM(CA_TND) AS Chiffre_Affaires_Total\nFROM FACT_Vente\nWHERE YEAR(Date_Facture) = 2024;"
+    },
+    {
+      "id": "u2",
+      "question": "Combien de factures distinctes avons-nous émises en 2023 ?",
+      "outcome": "success",
+      "response_time_s": 82.86,
+      "uex": false,
+      "sl_recall": 1.0,
+      "kr_recall": 0.5,
+      "generated_sql": "SELECT \n    2023 AS Annee_Filtre, \n    COUNT(DISTINCT Num_Facture) AS Nb_Factures_Distinctes\nFROM FACT_Vente\nWHERE YEAR(Date_Facture) = 2023;"
+    },
+    {
+      "id": "u3",
+      "question": "Quel est le chiffre d'affaires par mois pour l'année 2024 ?",
+      "outcome": "success",
+      "response_time_s": 109.33,
+      "uex": false,
+      "sl_recall": 0.0,
+      "kr_recall": 0.0,
+      "generated_sql": "WITH Mois AS (\n    SELECT 1 AS M UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 \n    UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 \n    UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12\n)\nSELECT \n    2024 AS Annee_Filtre,\n    m.M AS Mois, \n    ISNULL(SUM(v.CA_TND), 0) AS Total_CA_TND\nFROM Mois m\nLEFT JOIN FACT_Vente v ON MONTH(v.Date_Facture) = m.M AND YEAR(v.Date_Facture) = 2024\nGROUP BY m.M \nORDER BY m.M;"
+    },
+    {
+      "id": "u4",
+      "question": "Combien de commandes clients avons-nous eu chaque mois en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 25.52,
+      "uex": false,
+      "sl_recall": 0.0,
+      "kr_recall": 0.0,
+      "generated_sql": "WITH Mois AS (\n    SELECT 1 AS M UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 \n    UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 \n    UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12\n)\nSELECT \n    '2024' AS Annee_Filtre,\n    m.M AS Mois, \n    COUNT(DISTINCT v.Num_Commande) AS Nb_Commandes_Uniques\nFROM Mois m\nLEFT JOIN FACT_Commande_Client v \n    ON MONTH(v.Date_Commande) = m.M \n    AND YEAR(v.Date_Commande) = 2024\nGROUP BY m.M\nORDER BY m.M;"
+    },
+    {
+      "id": "u5",
+      "question": "Quel est le montant total facturé pour les commandes clients en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 12.31,
+      "uex": false,
+      "sl_recall": 1.0,
+      "kr_recall": 0.5,
+      "generated_sql": "SELECT \n    '2024' AS Annee_Filtre, \n    SUM(Total_Montant_Facture) AS Montant_Total_Facture\nFROM FACT_Commande_Client\nWHERE YEAR(Date_Commande) = 2024;"
+    },
+    {
+      "id": "u6",
+      "question": "Quel est le total impayé et le total recouvré en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 44.8,
+      "uex": false,
+      "sl_recall": 0.0,
+      "kr_recall": 0.0,
+      "generated_sql": "SELECT \n    '2024' AS Annee_Filtre, \n    SUM(Montant_Ouvert) AS Total_Impaye, \n    SUM(Montant_Regle) AS Total_Recouvre\nFROM FACT_Recouvrement_Client\nWHERE YEAR(Date) = 2024;"
+    },
+    {
+      "id": "u7",
+      "question": "Quel est le rendement moyen de production en 2024 ?",
+      "outcome": "clarify",
+      "response_time_s": 2.89,
+      "uex": false,
+      "sl_recall": 0.0,
+      "kr_recall": 0.0,
+      "generated_sql": ""
+    },
+    {
+      "id": "u8",
+      "question": "Quelle est la quantité totale terminée et rejetée en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 16.78,
+      "uex": false,
+      "sl_recall": 1.0,
+      "kr_recall": 0.0,
+      "generated_sql": "SELECT \n    2024 AS Annee_Filtre, \n    (SELECT SUM(Qte_Terminee) \n     FROM FACT_PROD_Consommation \n     WHERE YEAR(Date_Cloture) = 2024) AS Quantite_Totale_Terminee, \n    (SELECT SUM(Qte_Rejetee) \n     FROM FACT_PROD_Declaration \n     WHERE YEAR(Date_Echeance) = 2024) AS Quantite_Totale_Rejetee;"
+    },
+    {
+      "id": "u9",
+      "question": "Quel est le rendement moyen de production par mois en 2024 ? (vue RH)",
+      "outcome": "clarify",
+      "response_time_s": 6.84,
+      "uex": false,
+      "sl_recall": 0.0,
+      "kr_recall": 0.0,
+      "generated_sql": ""
+    },
+    {
+      "id": "u10",
+      "question": "Quel est le total des impayés et des recouvrements par mois en 2024 ? (vue RH)",
+      "outcome": "success",
+      "response_time_s": 12.91,
+      "uex": false,
+      "sl_recall": 0.0,
+      "kr_recall": 0.0,
+      "generated_sql": "SELECT \n    2024 AS Annee_Filtre, \n    Mois, \n    SUM(Total_Impaye) AS Somme_Total_Impaye, \n    SUM(Total_Recouvrement) AS Somme_Total_Recouvrement\nFROM AGG_Recouvrement_Client\nWHERE Annee = 2024\nGROUP BY Mois\nORDER BY Mois;"
+    },
+    {
+      "id": "u11",
+      "question": "Quels sont les 5 clients avec le plus gros chiffre d'affaires en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 27.89,
+      "uex": false,
+      "sl_recall": 1.0,
+      "kr_recall": 0.25,
+      "generated_sql": "SELECT TOP 5\n    c.Nom_Client,\n    v.Code_Client,\n    '2024' AS Annee_Filtre,\n    SUM(v.CA_TND) AS CA_TND_Total,\n    ROW_NUMBER() OVER (ORDER BY SUM(v.CA_TND) DESC) AS Rang\nFROM FACT_Vente v\nJOIN DIM_Client c ON v.Code_Client = c.Code_Client\nWHERE YEAR(v.Date_Facture) = 2024\nGROUP BY c.Nom_Client, v.Code_Client\nORDER BY CA_TND_Total DESC;"
+    },
+    {
+      "id": "u12",
+      "question": "Quel est le chiffre d'affaires par pays en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 21.11,
+      "uex": false,
+      "sl_recall": 1.0,
+      "kr_recall": 0.333,
+      "generated_sql": "SELECT \n    r.Pays, \n    2024 AS Annee_Filtre, \n    SUM(v.CA_TND) AS Total_CA_TND\nFROM FACT_Vente v\nJOIN DIM_Region r ON v.Code_Region = r.Code_Region\nWHERE YEAR(v.Date_Facture) = 2024\nGROUP BY r.Pays;"
+    },
+    {
+      "id": "u13",
+      "question": "Quel est le chiffre d'affaires par famille d'article en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 29.35,
+      "uex": false,
+      "sl_recall": 0.667,
+      "kr_recall": 0.75,
+      "generated_sql": "SELECT \n    DIM_Article.Famille_Article, \n    SUM(FACT_Vente.CA_TND) AS CA_Total, \n    2024 AS Annee_Filtre\nFROM FACT_Vente\nJOIN DIM_Article ON FACT_Vente.Code_Article = DIM_Article.Code_Article\nWHERE YEAR(FACT_Vente.Date_Facture) = 2024\nGROUP BY DIM_Article.Famille_Article;"
+    },
+    {
+      "id": "u14",
+      "question": "Quels sont les 5 articles les plus vendus en quantité en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 13.79,
+      "uex": false,
+      "sl_recall": 0.5,
+      "kr_recall": 0.333,
+      "generated_sql": "SELECT TOP 5\n    Code_Article,\n    SUM(Quantité) AS Somme_Quantite,\n    ROW_NUMBER() OVER (ORDER BY SUM(Quantité) DESC) AS Rang,\n    2024 AS Annee_Filtre\nFROM FACT_Vente\nWHERE YEAR(Date_Facture) = 2024\nGROUP BY Code_Article\nORDER BY Somme_Quantite DESC;"
+    },
+    {
+      "id": "u15",
+      "question": "Combien de clients avons-nous par type de client ?",
+      "outcome": "success",
+      "response_time_s": 7.92,
+      "uex": true,
+      "sl_recall": 1.0,
+      "kr_recall": 1.0,
+      "generated_sql": "SELECT\n    t.Description,\n    COUNT(DISTINCT c.Code_Client) AS Nb_Clients\nFROM DIM_Type_Client t\nJOIN DIM_Client c ON t.Code_Type_Client = c.Code_Type_Client\nGROUP BY t.Description;"
+    },
+    {
+      "id": "u16",
+      "question": "Quels sont les 5 clients avec le plus gros montant de commandes en 2024 ?",
+      "outcome": "success",
+      "response_time_s": 9.51,
+      "uex": false,
+      "sl_recall": 0.0,
+      "kr_recall": 0.0,
+      "generated_sql": "SELECT TOP 5\n    '2024' AS Annee_Filtre,\n    Code_Client,\n    SUM(Montant_Commande) AS Total_Montant_Commande,\n    ROW_NUMBER() OVER (ORDER BY SUM(Montant_Commande) DESC) AS Rang\nFROM AGG_Commande\nWHERE Annee = 2024\nGROUP BY Code_Client\nORDER BY Total_Montant_Commande DESC;"
+    }
+  ]
+}

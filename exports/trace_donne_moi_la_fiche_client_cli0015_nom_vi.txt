@@ -1,0 +1,195 @@
+========================================================================
+TRAÇAGE DU RETRIEVAL — comment le programme extrait les données
+========================================================================
+Question : Donne-moi la fiche client CLI0015 : nom, ville, pays, sur une seule ligne texte.
+Paramètres : coarse_k=30 (candidats/méthode), fine_k=16 (gardés)
+Reranker actif : False
+Méthode de scoring active : paper
+  (ALPHA=1.0, BETA=0.0 pour la méthode 'paper')
+
+── ÉTAPE 1 — MOTS-CLÉS EXTRAITS (tokenisation) ──
+  ['donne-moi', 'la', 'fiche', 'client', 'cli0015', ':', 'nom,', 'ville,', 'pays,', 'sur', 'une', 'seule', 'ligne', 'texte']
+  (14 tokens : minuscules, '.' et '|' remplacés par espaces)
+
+── ÉTAPE 2 — RECHERCHE VECTORIELLE (similarité sémantique bge-m3) ──
+  Vecteur question : dimension 1024 (bge-m3)
+  Top 30 par similarité sémantique :
+     1. [Task   ] Quelle est la ville et le pays de chaque client ?   (score=0.6471)
+     2. [Term   ] Type de client   (score=0.6100)
+     3. [Term   ] Region / adresse client   (score=0.5984)
+     4. [Term   ] Commande client   (score=0.5901)
+     5. [Column ] DIM_Client.Nom_Client   (score=0.5851)
+     6. [Term   ] Type de fournisseur   (score=0.5814)
+     7. [Term   ] Classe client   (score=0.5805)
+     8. [Term   ] Client   (score=0.5696)
+     9. [Term   ] Fournisseur   (score=0.5689)
+    10. [Column ] DIM_Type_Client.Code_Type_Client   (score=0.5679)
+    11. [Column ] DIM_Type_Client.Description   (score=0.5655)
+    12. [Column ] DIM_Client.Code_Client   (score=0.5653)
+    13. [Term   ] Domaine commercial   (score=0.5639)
+    14. [Column ] DIM_Fournisseur.Ville   (score=0.5631)
+    15. [Column ] DIM_Classe_Client.Code_classe_client   (score=0.5617)
+    16. [Column ] DIM_Client.Code_Type_Client   (score=0.5607)
+    17. [Column ] DIM_Region.Code_Client   (score=0.5598)
+    18. [Term   ] Methode de paiement   (score=0.5591)
+    19. [Term   ] Motif de retour (vente)   (score=0.5583)
+    20. [Column ] DIM_Classe_Client.Description   (score=0.5570)
+    21. [Term   ] Numero de serie / lot vendu   (score=0.5516)
+    22. [Column ] FACT_Vente.Code_Client   (score=0.5497)
+    23. [Column ] DIM_Client.Classe_Client   (score=0.5488)
+    24. [Column ] DIM_Fournisseur.Nom_Fournisseur   (score=0.5482)
+    25. [Column ] DIM_Client.Region   (score=0.5472)
+    26. [Column ] FACT_Commande_Client.Ligne_Produit   (score=0.5448)
+    27. [Column ] DIM_Fournisseur.Pays   (score=0.5425)
+    28. [Column ] FACT_Recouvrement_Client.Code_Client   (score=0.5409)
+    29. [Term   ] Unite de mesure   (score=0.5403)
+    30. [Term   ] Recouvrement client / creance   (score=0.5386)
+
+── ÉTAPE 3 — RECHERCHE LEXICALE (BM25, correspondance de mots) ──
+  Top 30 par score BM25 :
+     1. [Term   ] Region / adresse client   (bm25=14.542) score_norm=1.000
+     2. [Term   ] Fournisseur   (bm25=11.911) score_norm=0.819
+     3. [Term   ] Commande client   (bm25=10.711) score_norm=0.737
+     4. [Term   ] Vente / facturation   (bm25=10.024) score_norm=0.689
+     5. [Term   ] Famille d'article   (bm25=9.759) score_norm=0.671
+     6. [Term   ] Client   (bm25=9.435) score_norm=0.649
+     7. [Term   ] Bon de livraison   (bm25=9.381) score_norm=0.645
+     8. [Term   ] Grain de la donnee   (bm25=8.236) score_norm=0.566
+     9. [Term   ] Unite de production   (bm25=8.158) score_norm=0.561
+    10. [Term   ] Type de client   (bm25=8.034) score_norm=0.552
+    11. [Task   ] Quelle est la ville et le pays de chaque client ?   (bm25=7.858) score_norm=0.540
+    12. [Term   ] Motif de retour (vente)   (bm25=6.578) score_norm=0.452
+    13. [Term   ] Recouvrement client / creance   (bm25=6.544) score_norm=0.450
+    14. [Term   ] Article / produit   (bm25=6.196) score_norm=0.426
+    15. [Term   ] Cout de revient d'un article   (bm25=5.363) score_norm=0.369
+    16. [Term   ] Retour client   (bm25=5.337) score_norm=0.367
+    17. [Term   ] Centre de charge   (bm25=5.335) score_norm=0.367
+    18. [Task   ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?   (bm25=5.202) score_norm=0.358
+    19. [Term   ] Classe client   (bm25=5.182) score_norm=0.356
+    20. [Task   ] Quel est le CA moyen par ligne de vente et par facture ?   (bm25=5.107) score_norm=0.351
+    21. [Term   ] Agregat de commande   (bm25=4.958) score_norm=0.341
+    22. [Task   ] Quels sont les motifs de retour client existants ?   (bm25=4.672) score_norm=0.321
+    23. [Task   ] Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?   (bm25=4.318) score_norm=0.297
+    24. [Term   ] Agregat de recouvrement   (bm25=4.291) score_norm=0.295
+    25. [Task   ] Quel est le CA total par client ?   (bm25=4.242) score_norm=0.292
+    26. [Task   ] Quel est le montant total impaye par client ?   (bm25=4.133) score_norm=0.284
+    27. [Term   ] Nomenclature   (bm25=3.580) score_norm=0.246
+    28. [Term   ] Consommation matiere (production)   (bm25=3.344) score_norm=0.230
+    29. [Term   ] Homonymie de colonnes cles   (bm25=3.190) score_norm=0.219
+    30. [Term   ] Statut de commande   (bm25=3.134) score_norm=0.215
+
+── ÉTAPE 4 — FUSION (union vectoriel + lexical) ──
+  51 candidats uniques après fusion
+  - présents dans LES DEUX méthodes : ['Classe client', 'Client', 'Commande client', 'Fournisseur', 'Motif de retour (vente)', 'Quelle est la ville et le pays de chaque client ?', 'Recouvrement client / creance', 'Region / adresse client', 'Type de client']
+  - vectoriel seulement : ['DIM_Classe_Client.Code_classe_client', 'DIM_Classe_Client.Description', 'DIM_Client.Classe_Client', 'DIM_Client.Code_Client', 'DIM_Client.Code_Type_Client', 'DIM_Client.Nom_Client', 'DIM_Client.Region', 'DIM_Fournisseur.Nom_Fournisseur', 'DIM_Fournisseur.Pays', 'DIM_Fournisseur.Ville', 'DIM_Region.Code_Client', 'DIM_Type_Client.Code_Type_Client', 'DIM_Type_Client.Description', 'Domaine commercial', 'FACT_Commande_Client.Ligne_Produit', 'FACT_Recouvrement_Client.Code_Client', 'FACT_Vente.Code_Client', 'Methode de paiement', 'Numero de serie / lot vendu', 'Type de fournisseur', 'Unite de mesure']
+  - BM25 seulement      : ['Agregat de commande', 'Agregat de recouvrement', 'Article / produit', 'Bon de livraison', 'Centre de charge', 'Consommation matiere (production)', "Cout de revient d'un article", "Famille d'article", 'Grain de la donnee', 'Homonymie de colonnes cles', 'Nomenclature', 'Quel est le CA moyen par ligne de vente et par facture ?', 'Quel est le CA total par client ?', 'Quel est le montant total impaye par client ?', "Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?", 'Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?', 'Quels sont les motifs de retour client existants ?', 'Retour client', 'Statut de commande', 'Unite de production', 'Vente / facturation']
+
+── ÉTAPE 5 — MULTI-HOP (traversée des ancêtres via anc_name) ──
+  60 candidats après multi-hop (+9 ancêtres)
+    + DIM_Classe_Client ⟵ Database TestDB_DataWarehouse
+    + DIM_Client ⟵ Database TestDB_DataWarehouse
+    + DIM_Fournisseur ⟵ Database TestDB_DataWarehouse
+    + DIM_Region ⟵ Database TestDB_DataWarehouse
+    + DIM_Type_Client ⟵ Database TestDB_DataWarehouse
+    + FACT_Commande_Client ⟵ Database TestDB_DataWarehouse
+    + FACT_Recouvrement_Client ⟵ Database TestDB_DataWarehouse
+    + FACT_Vente ⟵ Database TestDB_DataWarehouse
+    + TestDB_DataWarehouse
+
+── ÉTAPE 6 — SCORE PAPIER : Score(t) = Sim(t) + α·Embed(t) + β·Heat(t) ──
+  (calculé pour TOUS les candidats fusionnés, indépendamment de la
+   méthode active — sert à régler ALPHA/BETA dans config.py)
+
+   rg  entrée                             Sim(t)   Embed  α·Embed   Heat  β·Heat    Score
+  ---------------------------------------------------------------------------------------
+    1  DIM_Client                         0.6128   0.000   0.0000  0.000  0.0000   4.1485
+    2  DIM_Client.Nom_Client              1.0293   0.429   0.4286  0.000  0.0000   3.2258
+    3  DIM_Client.Code_Client             1.0029   0.247   0.2466  0.000  0.0000   3.0174
+    4  DIM_Client.Code_Type_Client        0.8876   0.203   0.2035  0.000  0.0000   2.8589
+    5  DIM_Client.Classe_Client           0.9939   0.094   0.0939  0.000  0.0000   2.8557
+    6  DIM_Client.Region                  0.7932   0.079   0.0793  0.000  0.0000   2.6404
+    7  Quelle est la ville et le pays d   1.2817   1.000   1.0000  0.000  0.0000   2.2817
+    8  FACT_Commande_Client               0.6424   0.000   0.0000  0.000  0.0000   2.2221
+    9  FACT_Vente                         0.5888   0.000   0.0000  0.000  0.0000   2.0559
+   10  FACT_Commande_Client.Ligne_Produ   0.8636   0.057   0.0570  0.000  0.0000   1.7104
+   11  Type de client                     1.0090   0.658   0.6576  0.000  0.0000   1.6666
+   12  Region / adresse client            1.1010   0.551   0.5512  0.000  0.0000   1.6523
+   13  Client                             1.3487   0.286   0.2856  0.000  0.0000   1.6343
+   14  FACT_Vente.Code_Client             0.7393   0.102   0.1022  0.000  0.0000   1.5751
+   15  Classe client                      1.1576   0.386   0.3860  0.000  0.0000   1.5436
+   16  DIM_Type_Client.Code_Type_Client   0.7949   0.270   0.2699  0.000  0.0000   1.5221
+   17  DIM_Classe_Client                  0.6204   0.000   0.0000  0.000  0.0000   1.4909
+   18  DIM_Classe_Client.Code_classe_cl   0.8411   0.213   0.2135  0.000  0.0000   1.4898
+   19  DIM_Fournisseur.Ville              0.8374   0.226   0.2260  0.000  0.0000   1.4892
+   20  DIM_Type_Client                    0.5627   0.000   0.0000  0.000  0.0000   1.4774
+   21  DIM_Region                         0.5615   0.000   0.0000  0.000  0.0000   1.4586
+   22  DIM_Type_Client.Description        0.6813   0.248   0.2478  0.000  0.0000   1.3864
+   23  Commande client                    0.8641   0.475   0.4748  0.000  0.0000   1.3389
+   24  DIM_Fournisseur                    0.4820   0.000   0.0000  0.000  0.0000   1.3337
+   25  DIM_Classe_Client.Description      0.7248   0.170   0.1700  0.000  0.0000   1.3301
+   26  FACT_Recouvrement_Client           0.4990   0.000   0.0000  0.000  0.0000   1.3065
+   27  DIM_Region.Code_Client             0.6561   0.196   0.1956  0.000  0.0000   1.3003
+   28  DIM_Fournisseur.Pays               0.7571   0.037   0.0366  0.000  0.0000   1.2195
+   29  FACT_Recouvrement_Client.Code_Cl   0.7203   0.021   0.0210  0.000  0.0000   1.1451
+   30  DIM_Fournisseur.Nom_Fournisseur    0.6064   0.089   0.0889  0.000  0.0000   1.1211
+   31  Fournisseur                        0.7598   0.279   0.2790  0.000  0.0000   1.0387
+   32  Vente / facturation                0.9880   0.000   0.0000  0.000  0.0000   0.9880
+   33  Grain de la donnee                 0.9282   0.000   0.0000  0.000  0.0000   0.9282
+   34  Type de fournisseur                0.5016   0.395   0.3946  0.000  0.0000   0.8962
+   35  Article / produit                  0.8612   0.000   0.0000  0.000  0.0000   0.8612
+   36  Agregat de recouvrement            0.8198   0.000   0.0000  0.000  0.0000   0.8198
+   37  Famille d'article                  0.8133   0.000   0.0000  0.000  0.0000   0.8133
+   38  Unite de mesure                    0.7901   0.016   0.0163  0.000  0.0000   0.8063
+   39  Quel est le CA moyen par ligne d   0.7761   0.000   0.0000  0.000  0.0000   0.7761
+   40  Quel est le montant total impaye   0.7744   0.000   0.0000  0.000  0.0000   0.7744
+   41  Motif de retour (vente)            0.5656   0.182   0.1821  0.000  0.0000   0.7477
+   42  Domaine commercial                 0.5060   0.233   0.2332  0.000  0.0000   0.7392
+   43  Numero de serie / lot vendu        0.6087   0.120   0.1197  0.000  0.0000   0.7284
+   44  Quels fournisseurs ont livre en    0.7014   0.000   0.0000  0.000  0.0000   0.7014
+   45  Homonymie de colonnes cles         0.6885   0.000   0.0000  0.000  0.0000   0.6885
+   46  Nomenclature                       0.6690   0.000   0.0000  0.000  0.0000   0.6690
+   47  Recouvrement client / creance      0.6689   0.000   0.0000  0.000  0.0000   0.6689
+   48  Quel est le CA total par client    0.6594   0.000   0.0000  0.000  0.0000   0.6594
+   49  Quelle est la quantite totale co   0.6475   0.000   0.0000  0.000  0.0000   0.6475
+   50  Agregat de commande                0.6358   0.000   0.0000  0.000  0.0000   0.6358
+   51  Unite de production                0.6067   0.000   0.0000  0.000  0.0000   0.6067
+   52  Methode de paiement                0.3782   0.189   0.1887  0.000  0.0000   0.5669
+   53  Centre de charge                   0.5467   0.000   0.0000  0.000  0.0000   0.5467
+   54  Retour client                      0.5245   0.000   0.0000  0.000  0.0000   0.5245
+   55  Bon de livraison                   0.5192   0.000   0.0000  0.000  0.0000   0.5192
+   56  Cout de revient d'un article       0.5124   0.000   0.0000  0.000  0.0000   0.5124
+   57  Quels sont les motifs de retour    0.4946   0.000   0.0000  0.000  0.0000   0.4946
+   58  Consommation matiere (production   0.4818   0.000   0.0000  0.000  0.0000   0.4818
+   59  Statut de commande                 0.4515   0.000   0.0000  0.000  0.0000   0.4515
+   60  TestDB_DataWarehouse               0.2421   0.000   0.0000  0.000  0.0000   0.2421
+
+  Lecture pour régler les hyperparamètres :
+  - Sim(t) domine et écrase les autres termes -> baisser α et/ou β,
+    ou vérifier que payload['columns'] est bien peuplé (sinon Sim(t)
+    retombe sur un repli à 1 seul champ, moins discriminant).
+  - Un candidat pertinent classé bas malgré un bon Embed(t) -> monter α.
+  - Heat(t) fait remonter des tables populaires mais hors-sujet -> baisser β.
+
+── ÉTAPE 7 — CLASSEMENT FINAL (méthode active) ──
+
+  16 entrées retenues (fine_k=16) :
+     1. TABLE DIM_Client
+     2. colonne DIM_Client.Nom_Client (NVARCHAR(80) COLLATE "French_CI_AS")
+     3. colonne DIM_Client.Code_Client (NVARCHAR(80) COLLATE "French_CI_AS")
+     4. colonne DIM_Client.Code_Type_Client (NVARCHAR(30) COLLATE "French_CI_AS")
+     5. colonne DIM_Client.Classe_Client (NVARCHAR(80) COLLATE "French_CI_AS")
+     6. colonne DIM_Client.Region (NVARCHAR(30) COLLATE "French_CI_AS")
+     7. Task Quelle est la ville et le pays de chaque client ?
+     8. TABLE FACT_Commande_Client
+     9. TABLE FACT_Vente
+    10. TABLE AGG_Recouvrement_Client
+    11. Term Region / adresse client
+    12. colonne DIM_Type_Client.Code_Type_Client (NVARCHAR(80) COLLATE "French_CI_AS")
+    13. colonne DIM_Type_Client.Description (NVARCHAR(100) COLLATE "French_CI_AS")
+    14. colonne DIM_Fournisseur.Ville (NVARCHAR(30) COLLATE "French_CI_AS")
+    15. Term Client
+    16. TABLE AGG_Commande
+
+── SYNTHÈSE : tables & colonnes comprises au final ──
+  Tables  : ['AGG_Commande', 'AGG_Recouvrement_Client', 'DIM_Client', 'FACT_Commande_Client', 'FACT_Vente']
+  Colonnes: ['DIM_Client.Classe_Client', 'DIM_Client.Code_Client', 'DIM_Client.Code_Type_Client', 'DIM_Client.Nom_Client', 'DIM_Client.Region', 'DIM_Fournisseur.Ville', 'DIM_Type_Client.Code_Type_Client', 'DIM_Type_Client.Description']

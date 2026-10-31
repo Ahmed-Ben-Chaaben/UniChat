@@ -1,0 +1,112 @@
+========================================================================
+TRAÇAGE DU RETRIEVAL — comment le programme extrait les données
+========================================================================
+Question : Quelle est la marge brute totale réalisée par famille d'article, en comparant le chiffre d'affaires au coût de revient standard unitaire le plus elevee ? 
+Paramètres : coarse_k=30 (candidats/méthode), fine_k=16 (gardés)
+Reranker actif : False
+
+── ÉTAPE 1 — MOTS-CLÉS EXTRAITS (tokenisation) ──
+  ['quelle', 'est', 'la', 'marge', 'brute', 'totale', 'réalisée', 'par', 'famille', "d'article,", 'en', 'comparant', 'le', 'chiffre', "d'affaires", 'au', 'coût', 'de', 'revient', 'standard', 'unitaire', 'le', 'plus', 'elevee', '?']
+  (25 tokens : minuscules, '.' et '|' remplacés par espaces)
+
+── ÉTAPE 2 — RECHERCHE VECTORIELLE (similarité sémantique bge-m3) ──
+  Vecteur question : dimension 1024 (bge-m3)
+  Top 30 par similarité sémantique :
+     1. [Term   ] Cout de revient d'un article   (score=0.5473)
+     2. [Term   ] Article / produit   (score=0.5063)
+     3. [Task   ] Quel est le cout matiere le plus recent de chaque article ?   (score=0.4764)
+     4. [Term   ] Vente / facturation   (score=0.4682)
+     5. [Term   ] Famille d'article   (score=0.4661)
+     6. [Task   ] Quels sont les 5 articles les plus vendus en chiffre d'affaires ?   (score=0.4625)
+     7. [Task   ] Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?   (score=0.4570)
+     8. [Task   ] Quel est le prix de vente moyen par type d'article ?   (score=0.4430)
+     9. [Task   ] Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?   (score=0.4403)
+    10. [Term   ] Valorisation de production   (score=0.4392)
+    11. [Term   ] Consommation matiere (production)   (score=0.4384)
+    12. [Task   ] Quelle est la duree totale d'arret de production par machine ?   (score=0.4333)
+    13. [Term   ] Gamme de fabrication   (score=0.4310)
+    14. [Term   ] Numero de serie / lot vendu   (score=0.4285)
+    15. [Term   ] Ordre de fabrication (OF)   (score=0.4269)
+    16. [Term   ] Rendement de production   (score=0.4257)
+    17. [Column ] DIM_Cout_Article.Cout_Total   (score=0.4213)
+    18. [Task   ] Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?   (score=0.4177)
+    19. [Column ] FACT_PROD_Consommation.Cout_Std_Tot_Reel   (score=0.4154)
+    20. [Task   ] Quelle est la periode de validite de chaque unite de production par article ?   (score=0.4134)
+    21. [Task   ] Quels clients ont un montant moyen de facture superieur a 5000 TND ?   (score=0.4129)
+    22. [Column ] FACT_PROD_Consommation.Cout_Matiere   (score=0.4128)
+    23. [Term   ] Validite d'une unite de production   (score=0.4126)
+    24. [Term   ] Grain de la donnee   (score=0.4054)
+    25. [Term   ] Agregat de recouvrement   (score=0.4053)
+    26. [Term   ] Stock   (score=0.4046)
+    27. [Task   ] Quel est le taux de rejet moyen par centre de charge en declaration de production ?   (score=0.4032)
+    28. [Task   ] Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?   (score=0.4026)
+    29. [Term   ] Agregat de commande   (score=0.4014)
+    30. [Term   ] Unite de production   (score=0.4013)
+
+── ÉTAPE 3 — RECHERCHE LEXICALE (BM25, correspondance de mots) ──
+  Top 30 par score BM25 :
+     1. [Task   ] Quel est le chiffre d'affaires total en TND ?   (bm25=30.646)
+     2. [Task   ] Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?   (bm25=24.546)
+     3. [Task   ] Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?   (bm25=23.907)
+     4. [Task   ] Quel est le chiffre d'affaires par mois pour l'annee 2025 ?   (bm25=23.661)
+     5. [Task   ] Quelle est la duree totale d'arret de production par machine ?   (bm25=21.604)
+     6. [Task   ] Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?   (bm25=20.890)
+     7. [Task   ] Quels sont les 5 articles les plus vendus en chiffre d'affaires ?   (bm25=20.700)
+     8. [Task   ] Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?   (bm25=20.589)
+     9. [Task   ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?   (bm25=20.589)
+    10. [Term   ] Chiffre d'affaires (CA)   (bm25=20.015)
+    11. [Task   ] Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?   (bm25=18.893)
+    12. [Task   ] Quel est le cout matiere le plus recent de chaque article ?   (bm25=18.718)
+    13. [Task   ] Quel est le nombre de bons de livraison par site ?   (bm25=18.210)
+    14. [Task   ] Quelle est la ville et le pays de chaque client ?   (bm25=18.194)
+    15. [Task   ] Quel est le motif d'arret de production le plus frequent ?   (bm25=17.883)
+    16. [Task   ] Quel est le prix de vente moyen par type d'article ?   (bm25=17.621)
+    17. [Task   ] Quel est le taux d'utilisation moyen par centre de charge ?   (bm25=17.621)
+    18. [Task   ] Quelle est la periode de validite de chaque unite de production par article ?   (bm25=17.287)
+    19. [Task   ] Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?   (bm25=17.179)
+    20. [Task   ] Quel est le stock disponible total par site ?   (bm25=16.905)
+    21. [Task   ] Quel est le montant total facture par commande ?   (bm25=16.905)
+    22. [Task   ] Quel est le taux de rejet moyen par centre de charge en declaration de production ?   (bm25=16.796)
+    23. [Task   ] Quel est l'article le plus vendu en CA dans chaque region ?   (bm25=16.542)
+    24. [Task   ] Quel est le CA total par client ?   (bm25=16.454)
+    25. [Task   ] Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?   (bm25=16.365)
+    26. [Task   ] Quel est le montant total des retours clients par motif ?   (bm25=16.028)
+    27. [Task   ] Quel est le montant total impaye par client ?   (bm25=16.028)
+    28. [Task   ] Quel est le taux de change actuel de l'euro ?   (bm25=15.600)
+    29. [Task   ] Quelle est la capacite machine de chaque departement ?   (bm25=15.437)
+    30. [Term   ] Cout de revient d'un article   (bm25=15.017)
+
+── ÉTAPE 4 — FUSION (union vectoriel + lexical) ──
+  49 candidats uniques après fusion
+  - présents dans LES DEUX méthodes : ["Cout de revient d'un article", "Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?", 'Quel est le cout matiere le plus recent de chaque article ?', "Quel est le cumul du chiffre d'affaires mois apres mois en 2025 ?", "Quel est le prix de vente moyen par type d'article ?", 'Quel est le taux de rejet moyen par centre de charge en declaration de production ?', "Quelle est la duree totale d'arret de production par machine ?", 'Quelle est la periode de validite de chaque unite de production par article ?', "Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?", "Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?", "Quels sont les 5 articles les plus vendus en chiffre d'affaires ?"]
+  - vectoriel seulement : ['Agregat de commande', 'Agregat de recouvrement', 'Article / produit', 'Consommation matiere (production)', 'DIM_Cout_Article.Cout_Total', 'FACT_PROD_Consommation.Cout_Matiere', 'FACT_PROD_Consommation.Cout_Std_Tot_Reel', "Famille d'article", 'Gamme de fabrication', 'Grain de la donnee', 'Numero de serie / lot vendu', 'Ordre de fabrication (OF)', 'Quels clients ont un montant moyen de facture superieur a 5000 TND ?', 'Rendement de production', 'Stock', 'Unite de production', "Validite d'une unite de production", 'Valorisation de production', 'Vente / facturation']
+  - BM25 seulement      : ["Chiffre d'affaires (CA)", "Quel est l'article le plus vendu en CA dans chaque region ?", 'Quel est le CA total par client ?', "Quel est le chiffre d'affaires par mois pour l'annee 2025 ?", "Quel est le chiffre d'affaires total en TND ?", 'Quel est le montant total des retours clients par motif ?', 'Quel est le montant total facture par commande ?', 'Quel est le montant total impaye par client ?', "Quel est le motif d'arret de production le plus frequent ?", 'Quel est le nombre de bons de livraison par site ?', 'Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?', 'Quel est le stock disponible total par site ?', "Quel est le taux d'utilisation moyen par centre de charge ?", "Quel est le taux de change actuel de l'euro ?", 'Quelle est la capacite machine de chaque departement ?', "Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?", 'Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?', "Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?", 'Quelle est la ville et le pays de chaque client ?']
+
+── ÉTAPE 5 — MULTI-HOP (traversée des ancêtres via anc_name) ──
+  52 candidats après multi-hop (+3 ancêtres)
+    + Chinook
+    + DIM_Cout_Article ⟵ Database Chinook
+    + FACT_PROD_Consommation ⟵ Database Chinook
+
+── ÉTAPE 6 — CLASSEMENT FINAL ──
+  16 entrées retenues (fine_k=16) :
+     1. Term Cout de revient d'un article
+     2. Task Quel est le chiffre d'affaires total en TND ?
+     3. Task Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?
+     4. Task Quels sont les 5 articles les plus vendus en chiffre d'affaires ?
+     5. Task Quel est le cout matiere le plus recent de chaque article ?
+     6. Task Quelle est la repartition du chiffre d'affaires par devise d'origine (sans conversion) ?
+     7. Term Article / produit
+     8. Task Quelle est la duree totale d'arret de production par machine ?
+     9. Task Quel est le chiffre d'affaires par mois pour l'annee 2025 ?
+    10. Term Vente / facturation
+    11. Task Quel est le prix de vente moyen par type d'article ?
+    12. Term Famille d'article
+    13. Task Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?
+    14. Task Quelle est la creance totale par mois d'apres l'agregat de recouvrement ?
+    15. Task Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?
+    16. Task Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?
+
+── SYNTHÈSE : tables & colonnes comprises au final ──
+  Tables  : (aucune)
+  Colonnes: (aucune)

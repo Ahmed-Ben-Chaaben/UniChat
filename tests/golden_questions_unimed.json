@@ -1,0 +1,130 @@
+[
+  {
+    "id": "u1",
+    "role": "Commercial",
+    "question": "Quel est le chiffre d'affaires total en 2024 ?",
+    "golden_sql": "SELECT SUM(CA_TND) AS CA FROM FACT_Vente WHERE YEAR(Date_Facture) = 2024;",
+    "required_tables": ["FACT_Vente"],
+    "relevant_kb_entries": ["CA_TND", "FACT_Vente", "Date_Facture"]
+  },
+  {
+    "id": "u2",
+    "role": "Commercial",
+    "question": "Combien de factures distinctes avons-nous émises en 2023 ?",
+    "golden_sql": "SELECT COUNT(DISTINCT Num_Facture) AS Nb_Factures FROM FACT_Vente WHERE YEAR(Date_Facture) = 2023;",
+    "required_tables": ["FACT_Vente"],
+    "relevant_kb_entries": ["FACT_Vente", "Num_Facture"]
+  },
+  {
+    "id": "u3",
+    "role": "Commercial",
+    "question": "Quel est le chiffre d'affaires par mois pour l'année 2024 ?",
+    "golden_sql": "SELECT Mois, CA_Total_TND FROM VW_KPI_CA_Global_Mensuel WHERE Annee = 2024 ORDER BY Mois;",
+    "required_tables": ["VW_KPI_CA_Global_Mensuel"],
+    "relevant_kb_entries": ["VW_KPI_CA_Global_Mensuel", "CA_Total_TND"]
+  },
+  {
+    "id": "u4",
+    "role": "Commercial",
+    "question": "Combien de commandes clients avons-nous eu chaque mois en 2024 ?",
+    "golden_sql": "SELECT Mois, Nb_Commandes FROM VW_KPI_Commandes_Global WHERE Annee = 2024 ORDER BY Mois;",
+    "required_tables": ["VW_KPI_Commandes_Global"],
+    "relevant_kb_entries": ["VW_KPI_Commandes_Global", "Nb_Commandes"]
+  },
+  {
+    "id": "u5",
+    "role": "Commercial",
+    "question": "Quel est le montant total facturé pour les commandes clients en 2024 ?",
+    "golden_sql": "SELECT SUM(Total_Montant_Facture) AS Montant_Total FROM FACT_Commande_Client WHERE YEAR(Date_Commande) = 2024;",
+    "required_tables": ["FACT_Commande_Client"],
+    "relevant_kb_entries": ["FACT_Commande_Client", "Total_Montant_Facture"]
+  },
+  {
+    "id": "u6",
+    "role": "Commercial",
+    "question": "Quel est le total impayé et le total recouvré en 2024 ?",
+    "golden_sql": "SELECT SUM(Total_Impaye) AS Impaye_Total, SUM(Total_Recouvrement) AS Recouvrement_Total FROM AGG_Recouvrement_Client WHERE Annee = 2024;",
+    "required_tables": ["AGG_Recouvrement_Client"],
+    "relevant_kb_entries": ["AGG_Recouvrement_Client", "Total_Impaye", "Total_Recouvrement"]
+  },
+  {
+    "id": "u7",
+    "role": "Responsable_Production",
+    "question": "Quel est le rendement moyen de production en 2024 ?",
+    "golden_sql": "SELECT AVG([%Rendement]) AS Rendement_Moyen FROM FACT_PROD_Declaration WHERE YEAR(Date_Demarrage) = 2024;",
+    "required_tables": ["FACT_PROD_Declaration"],
+    "relevant_kb_entries": ["FACT_PROD_Declaration", "%Rendement"]
+  },
+  {
+    "id": "u8",
+    "role": "Responsable_Production",
+    "question": "Quelle est la quantité totale terminée et rejetée en 2024 ?",
+    "golden_sql": "SELECT SUM(Qte_Terminee) AS Qte_Terminee_Totale, SUM(Qte_Rejetee) AS Qte_Rejetee_Totale FROM FACT_PROD_Declaration WHERE YEAR(Date_Demarrage) = 2024;",
+    "required_tables": ["FACT_PROD_Declaration"],
+    "relevant_kb_entries": ["FACT_PROD_Declaration", "Qte_Terminee", "Qte_Rejetee"]
+  },
+  {
+    "id": "u9",
+    "role": "RH",
+    "question": "Quel est le rendement moyen de production par mois en 2024 ? (vue RH)",
+    "golden_sql": "SELECT Mois, Rendement_Moyen_Pct FROM VW_KPI_Production_Global WHERE Annee = 2024 ORDER BY Mois;",
+    "required_tables": ["VW_KPI_Production_Global"],
+    "relevant_kb_entries": ["VW_KPI_Production_Global", "Rendement_Moyen_Pct"]
+  },
+  {
+    "id": "u10",
+    "role": "RH",
+    "question": "Quel est le total des impayés et des recouvrements par mois en 2024 ? (vue RH)",
+    "golden_sql": "SELECT Mois, Impaye_Total, Recouvrement_Total FROM VW_KPI_Recouvrement_Global WHERE Annee = 2024 ORDER BY Mois;",
+    "required_tables": ["VW_KPI_Recouvrement_Global"],
+    "relevant_kb_entries": ["VW_KPI_Recouvrement_Global", "Impaye_Total", "Recouvrement_Total"]
+  },
+  {
+    "id": "u11",
+    "role": "Commercial",
+    "question": "Quels sont les 5 clients avec le plus gros chiffre d'affaires en 2024 ?",
+    "golden_sql": "SELECT TOP 5 c.Nom_Client, SUM(v.CA_TND) AS CA FROM FACT_Vente v JOIN DIM_Client c ON c.Code_Client = v.Code_Client WHERE YEAR(v.Date_Facture) = 2024 GROUP BY c.Nom_Client ORDER BY CA DESC;",
+    "required_tables": ["FACT_Vente", "DIM_Client"],
+    "relevant_kb_entries": ["FACT_Vente", "DIM_Client", "Nom_Client", "CA_TND"]
+  },
+  {
+    "id": "u12",
+    "role": "Directeur_General",
+    "question": "Quel est le chiffre d'affaires par pays en 2024 ?",
+    "golden_sql": "SELECT r.Pays, SUM(v.CA_TND) AS CA FROM FACT_Vente v JOIN DIM_Region r ON r.Code_Region = v.Code_Region WHERE YEAR(v.Date_Facture) = 2024 GROUP BY r.Pays ORDER BY CA DESC;",
+    "required_tables": ["FACT_Vente", "DIM_Region"],
+    "relevant_kb_entries": ["FACT_Vente", "DIM_Region", "Pays"]
+  },
+  {
+    "id": "u13",
+    "role": "Directeur_General",
+    "question": "Quel est le chiffre d'affaires par famille d'article en 2024 ?",
+    "golden_sql": "SELECT f.Description, SUM(v.CA_TND) AS CA FROM FACT_Vente v JOIN DIM_Article a ON a.Code_Article = v.Code_Article JOIN DIM_Famille_Article f ON f.Code_Famille = a.Famille_Article WHERE YEAR(v.Date_Facture) = 2024 GROUP BY f.Description ORDER BY CA DESC;",
+    "required_tables": ["FACT_Vente", "DIM_Article", "DIM_Famille_Article"],
+    "relevant_kb_entries": ["FACT_Vente", "DIM_Article", "DIM_Famille_Article", "Famille_Article"]
+  },
+  {
+    "id": "u14",
+    "role": "Commercial",
+    "question": "Quels sont les 5 articles les plus vendus en quantité en 2024 ?",
+    "golden_sql": "SELECT TOP 5 a.Description, SUM(v.[Quantité]) AS Qte FROM FACT_Vente v JOIN DIM_Article a ON a.Code_Article = v.Code_Article WHERE YEAR(v.Date_Facture) = 2024 GROUP BY a.Description ORDER BY Qte DESC;",
+    "required_tables": ["FACT_Vente", "DIM_Article"],
+    "relevant_kb_entries": ["FACT_Vente", "DIM_Article", "Quantité"]
+  },
+  {
+    "id": "u15",
+    "role": "Directeur_General",
+    "question": "Combien de clients avons-nous par type de client ?",
+    "golden_sql": "SELECT tc.Description, COUNT(*) AS Nb FROM DIM_Client c JOIN DIM_Type_Client tc ON tc.Code_Type_Client = c.Code_Type_Client GROUP BY tc.Description ORDER BY Nb DESC;",
+    "required_tables": ["DIM_Client", "DIM_Type_Client"],
+    "relevant_kb_entries": ["DIM_Client", "DIM_Type_Client"]
+  },
+  {
+    "id": "u16",
+    "role": "Commercial",
+    "question": "Quels sont les 5 clients avec le plus gros montant de commandes en 2024 ?",
+    "golden_sql": "SELECT TOP 5 c.Nom_Client, SUM(cmd.Montant_Commande) AS Montant FROM FACT_Commande_Client cmd JOIN DIM_Client c ON c.Code_Client = cmd.Code_Client WHERE YEAR(cmd.Date_Commande) = 2024 GROUP BY c.Nom_Client ORDER BY Montant DESC;",
+    "required_tables": ["FACT_Commande_Client", "DIM_Client"],
+    "relevant_kb_entries": ["FACT_Commande_Client", "DIM_Client", "Montant_Commande"]
+  }
+]

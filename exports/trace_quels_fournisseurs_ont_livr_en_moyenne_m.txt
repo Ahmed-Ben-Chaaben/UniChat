@@ -1,0 +1,178 @@
+========================================================================
+TRAÇAGE DU RETRIEVAL — comment le programme extrait les données
+========================================================================
+Question : Quels fournisseurs ont livré en moyenne moins de 90% des quantités
+commandées, sur plus de 5 commandes ?
+Paramètres : coarse_k=30 (candidats/méthode), fine_k=16 (gardés)
+Reranker actif : False
+Méthode de scoring active : paper
+  (ALPHA=1.0, BETA=0.0 pour la méthode 'paper')
+
+── ÉTAPE 1 — MOTS-CLÉS EXTRAITS (tokenisation) ──
+  ['quels', 'fournisseurs', 'ont', 'livré', 'en', 'moyenne', 'moins', 'de', '90%', 'des', 'quantités', 'commandées,', 'sur', 'plus', 'de', '5', 'commandes', '?']
+  (18 tokens : minuscules, '.' et '|' remplacés par espaces)
+
+── ÉTAPE 2 — RECHERCHE VECTORIELLE (similarité sémantique bge-m3) ──
+  Vecteur question : dimension 1024 (bge-m3)
+  Top 30 par similarité sémantique :
+     1. [Task   ] Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?   (score=0.7914)
+     2. [Task   ] Quels sont les motifs de retour fournisseur existants ?   (score=0.5662)
+     3. [Task   ] Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?   (score=0.5629)
+     4. [Term   ] Type de fournisseur   (score=0.5508)
+     5. [Task   ] Quel est le nombre de bons de livraison par site ?   (score=0.5504)
+     6. [Task   ] Quels sont les 5 articles les plus vendus en chiffre d'affaires ?   (score=0.5414)
+     7. [Task   ] Quelles commandes n'ont jamais ete livrees ?   (score=0.5244)
+     8. [Task   ] Quels sont les motifs de retour client existants ?   (score=0.5219)
+     9. [Term   ] Motif de retour (achat)   (score=0.5208)
+    10. [Task   ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?   (score=0.5194)
+    11. [Table  ] DIM_Fournisseur   (score=0.5109)
+    12. [Task   ] Quelles sont les methodes de paiement disponibles ?   (score=0.5087)
+    13. [Task   ] Quel est le delai moyen en jours entre commande et reception fournisseur ?   (score=0.5085)
+    14. [Task   ] Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?   (score=0.5082)
+    15. [Task   ] Quel est le montant total facture par commande ?   (score=0.5067)
+    16. [Task   ] Quels sont les motifs de retard existants ?   (score=0.5045)
+    17. [Table  ] FACT_Ordre_Achat   (score=0.4952)
+    18. [Task   ] Quels sont les modalites de paiement disponibles et leurs delais ?   (score=0.4928)
+    19. [Term   ] Motif de retour (vente)   (score=0.4891)
+    20. [Task   ] Quel est le CA moyen par ligne de vente et par facture ?   (score=0.4885)
+    21. [Task   ] Quel est le taux d'utilisation moyen par centre de charge ?   (score=0.4878)
+    22. [Task   ] Quels clients ont un montant moyen de facture superieur a 5000 TND ?   (score=0.4861)
+    23. [Task   ] Quel est le montant total des retours clients par motif ?   (score=0.4854)
+    24. [Term   ] Commande client   (score=0.4844)
+    25. [Column ] FACT_Commande_Client.Total_Quantite_Livree   (score=0.4833)
+    26. [Table  ] DIM_Type_Fournisseur   (score=0.4832)
+    27. [Task   ] Quelle est la capacite machine de chaque departement ?   (score=0.4831)
+    28. [Task   ] Quels sont les statuts de commande possibles ?   (score=0.4824)
+    29. [Term   ] Fournisseur   (score=0.4815)
+    30. [Term   ] Ordre d'achat   (score=0.4811)
+
+── ÉTAPE 3 — RECHERCHE LEXICALE (BM25, correspondance de mots) ──
+  Top 30 par score BM25 :
+     1. [Task   ] Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?   (bm25=54.980) score_norm=1.000
+     2. [Task   ] Quels sont les 5 articles les plus vendus en chiffre d'affaires ?   (bm25=23.552) score_norm=0.428
+     3. [Task   ] Quels clients ont un montant moyen de facture superieur a 5000 TND ?   (bm25=14.668) score_norm=0.267
+     4. [Task   ] Quels sont les statuts de commande possibles ?   (bm25=12.625) score_norm=0.230
+     5. [Task   ] Quels sont les motifs de retard existants ?   (bm25=12.625) score_norm=0.230
+     6. [Task   ] Quels sont les motifs de retour client existants ?   (bm25=12.257) score_norm=0.223
+     7. [Task   ] Quels sont les motifs de retour fournisseur existants ?   (bm25=12.257) score_norm=0.223
+     8. [Task   ] Quels sont les types de transaction financiere existants ?   (bm25=12.257) score_norm=0.223
+     9. [Task   ] Quels domaines commerciaux sont de type export ?   (bm25=11.910) score_norm=0.217
+    10. [Task   ] Quels sont les modalites de paiement disponibles et leurs delais ?   (bm25=11.424) score_norm=0.208
+    11. [Task   ] Quelles lignes de commande ont un ecart entre quantite commandee et quantite livree ?   (bm25=11.302) score_norm=0.206
+    12. [Task   ] Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?   (bm25=10.517) score_norm=0.191
+    13. [Task   ] Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?   (bm25=10.104) score_norm=0.184
+    14. [Task   ] Quel est le taux de rejet moyen par centre de charge en declaration de production ?   (bm25=9.616) score_norm=0.175
+    15. [Task   ] Quel est le motif d'arret de production le plus frequent ?   (bm25=9.372) score_norm=0.170
+    16. [Task   ] Quel est l'article le plus vendu en CA dans chaque region ?   (bm25=9.259) score_norm=0.168
+    17. [Task   ] Quels sont les sites actifs ?   (bm25=8.854) score_norm=0.161
+    18. [Task   ] Quelles commandes sont encore au statut 'En cours' ?   (bm25=8.819) score_norm=0.160
+    19. [Task   ] Quel est le montant total des retours clients par motif ?   (bm25=8.559) score_norm=0.156
+    20. [Term   ] Fournisseur   (bm25=8.387) score_norm=0.153
+    21. [Task   ] Quel est le chiffre d'affaires total en TND ?   (bm25=8.371) score_norm=0.152
+    22. [Task   ] Quelles commandes n'ont jamais ete livrees ?   (bm25=8.053) score_norm=0.146
+    23. [Task   ] Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?   (bm25=7.847) score_norm=0.143
+    24. [Task   ] Quel est le taux de change actuel de l'euro ?   (bm25=7.735) score_norm=0.141
+    25. [Term   ] Reception fournisseur   (bm25=7.721) score_norm=0.140
+    26. [Task   ] Quelle est la periode de validite de chaque unite de production par article ?   (bm25=7.621) score_norm=0.139
+    27. [Task   ] Quel est le nombre de bons de livraison par site ?   (bm25=7.411) score_norm=0.135
+    28. [Task   ] Quel est le rendement theorique de chaque operation de production ?   (bm25=7.411) score_norm=0.135
+    29. [Task   ] Quels lots arrivent a peremption dans les 30 prochains jours ?   (bm25=7.408) score_norm=0.135
+    30. [Term   ] Motif de retard   (bm25=7.383) score_norm=0.134
+
+── ÉTAPE 4 — FUSION (union vectoriel + lexical) ──
+  47 candidats uniques après fusion
+  - présents dans LES DEUX méthodes : ['Fournisseur', 'Quel est le montant total des retours clients par motif ?', 'Quel est le nombre de bons de livraison par site ?', "Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?", "Quelles commandes n'ont jamais ete livrees ?", 'Quels clients ont un montant moyen de facture superieur a 5000 TND ?', 'Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?', "Quels sont les 5 articles les plus vendus en chiffre d'affaires ?", 'Quels sont les modalites de paiement disponibles et leurs delais ?', 'Quels sont les motifs de retard existants ?', 'Quels sont les motifs de retour client existants ?', 'Quels sont les motifs de retour fournisseur existants ?', 'Quels sont les statuts de commande possibles ?']
+  - vectoriel seulement : ['Commande client', 'DIM_Fournisseur', 'DIM_Type_Fournisseur', 'FACT_Commande_Client.Total_Quantite_Livree', 'FACT_Ordre_Achat', 'Motif de retour (achat)', 'Motif de retour (vente)', "Ordre d'achat", 'Quel est le CA moyen par ligne de vente et par facture ?', 'Quel est le delai moyen en jours entre commande et reception fournisseur ?', 'Quel est le montant total facture par commande ?', 'Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?', "Quel est le taux d'utilisation moyen par centre de charge ?", 'Quelle est la capacite machine de chaque departement ?', 'Quelle est la quantite theorique et la quantite terminee par ordre de fabrication ?', 'Quelles sont les methodes de paiement disponibles ?', 'Type de fournisseur']
+  - BM25 seulement      : ['Motif de retard', "Quel est l'article le plus vendu en CA dans chaque region ?", "Quel est l'ecart entre le cout standard et le cout reel de main-d'oeuvre en declaration de production ?", "Quel est le chiffre d'affaires total en TND ?", "Quel est le motif d'arret de production le plus frequent ?", 'Quel est le rendement theorique de chaque operation de production ?', "Quel est le taux de change actuel de l'euro ?", 'Quel est le taux de rejet moyen par centre de charge en declaration de production ?', 'Quelle est la periode de validite de chaque unite de production par article ?', "Quelle est la valeur de consommation, de main-d'oeuvre et de frais generaux par ordre de fabrication ?", "Quelles commandes sont encore au statut 'En cours' ?", 'Quelles lignes de commande ont un ecart entre quantite commandee et quantite livree ?', 'Quels domaines commerciaux sont de type export ?', 'Quels lots arrivent a peremption dans les 30 prochains jours ?', 'Quels sont les sites actifs ?', 'Quels sont les types de transaction financiere existants ?', 'Reception fournisseur']
+
+── ÉTAPE 5 — MULTI-HOP (traversée des ancêtres via anc_name) ──
+  49 candidats après multi-hop (+2 ancêtres)
+    + FACT_Commande_Client ⟵ Database TestDB_DataWarehouse
+    + TestDB_DataWarehouse
+
+── ÉTAPE 6 — SCORE PAPIER : Score(t) = Sim(t) + α·Embed(t) + β·Heat(t) ──
+  (calculé pour TOUS les candidats fusionnés, indépendamment de la
+   méthode active — sert à régler ALPHA/BETA dans config.py)
+
+   rg  entrée                             Sim(t)   Embed  α·Embed   Heat  β·Heat    Score
+  ---------------------------------------------------------------------------------------
+    1  Quels fournisseurs ont livre en    3.2424   1.000   1.0000  0.000  0.0000   4.2424
+    2  FACT_Commande_Client               0.8735   0.000   0.0000  0.000  0.0000   2.2911
+    3  Quelle est la quantite totale co   2.0277   0.123   0.1235  0.000  0.0000   2.1512
+    4  Quels sont les motifs de retour    1.8766   0.274   0.2741  0.000  0.0000   2.1507
+    5  FACT_Commande_Client.Total_Quant   1.4131   0.007   0.0071  0.000  0.0000   2.1290
+    6  Quelles lignes de commande ont u   2.1218   0.000   0.0000  0.000  0.0000   2.1218
+    7  Quel est le delai moyen en jours   1.9648   0.088   0.0882  0.000  0.0000   2.0530
+    8  Commande client                    2.0114   0.010   0.0105  0.000  0.0000   2.0219
+    9  Quels sont les 5 articles les pl   1.7713   0.194   0.1942  0.000  0.0000   1.9655
+   10  FACT_Ordre_Achat                   1.1311   0.045   0.0455  0.000  0.0000   1.8978
+   11  Quelles commandes n'ont jamais e   1.7262   0.140   0.1395  0.000  0.0000   1.8657
+   12  Ordre d'achat                      1.8307   0.000   0.0000  0.000  0.0000   1.8307
+   13  Quel est le nombre de receptions   1.5338   0.264   0.2636  0.000  0.0000   1.7974
+   14  Quels sont les motifs de retour    1.6144   0.132   0.1316  0.000  0.0000   1.7460
+   15  Quels sont les statuts de comman   1.7316   0.004   0.0042  0.000  0.0000   1.7358
+   16  DIM_Fournisseur                    0.8946   0.096   0.0961  0.000  0.0000   1.7124
+   17  Quel est le montant total factur   1.6295   0.082   0.0825  0.000  0.0000   1.7120
+   18  Quelles commandes sont encore au   1.7042   0.000   0.0000  0.000  0.0000   1.7042
+   19  DIM_Type_Fournisseur               0.8284   0.007   0.0068  0.000  0.0000   1.6615
+   20  Quel est le nombre de bons de li   1.3911   0.223   0.2232  0.000  0.0000   1.6144
+   21  Quels clients ont un montant moy   1.5894   0.016   0.0162  0.000  0.0000   1.6055
+   22  Type de fournisseur                1.3768   0.224   0.2244  0.000  0.0000   1.6012
+   23  Quels sont les modalites de paie   1.4914   0.038   0.0378  0.000  0.0000   1.5292
+   24  Quels sont les motifs de retard    1.4058   0.075   0.0755  0.000  0.0000   1.4813
+   25  Motif de retour (achat)            1.3082   0.128   0.1278  0.000  0.0000   1.4359
+   26  Fournisseur                        1.3706   0.001   0.0013  0.000  0.0000   1.3719
+   27  Quels sont les sites actifs ?      1.3566   0.000   0.0000  0.000  0.0000   1.3566
+   28  Quelle est la valeur de consomma   1.3486   0.000   0.0000  0.000  0.0000   1.3486
+   29  Quel est le CA moyen par ligne d   1.2928   0.024   0.0238  0.000  0.0000   1.3166
+   30  Quelle est la periode de validit   1.2513   0.000   0.0000  0.000  0.0000   1.2513
+   31  Quel est le rendement theorique    1.2466   0.000   0.0000  0.000  0.0000   1.2466
+   32  Motif de retard                    1.2359   0.000   0.0000  0.000  0.0000   1.2359
+   33  Quel est le montant total des re   1.2123   0.014   0.0139  0.000  0.0000   1.2263
+   34  Quelle est la quantite theorique   1.1153   0.087   0.0873  0.000  0.0000   1.2025
+   35  Quel est le motif d'arret de pro   1.2019   0.000   0.0000  0.000  0.0000   1.2019
+   36  Quel est le taux de change actue   1.1969   0.000   0.0000  0.000  0.0000   1.1969
+   37  Quel est l'article le plus vendu   1.1700   0.000   0.0000  0.000  0.0000   1.1700
+   38  Quels domaines commerciaux sont    1.1564   0.000   0.0000  0.000  0.0000   1.1564
+   39  Quelles sont les methodes de pai   1.0503   0.089   0.0889  0.000  0.0000   1.1393
+   40  Quel est l'ecart entre le cout s   1.1122   0.000   0.0000  0.000  0.0000   1.1122
+   41  Motif de retour (vente)            1.0860   0.026   0.0257  0.000  0.0000   1.1116
+   42  Quelle est la capacite machine d   1.0739   0.006   0.0063  0.000  0.0000   1.0802
+   43  Quel est le taux de rejet moyen    1.0798   0.000   0.0000  0.000  0.0000   1.0798
+   44  Quels sont les types de transact   1.0568   0.000   0.0000  0.000  0.0000   1.0568
+   45  Reception fournisseur              1.0481   0.000   0.0000  0.000  0.0000   1.0481
+   46  Quel est le taux d'utilisation m   0.9819   0.021   0.0214  0.000  0.0000   1.0033
+   47  Quels lots arrivent a peremption   0.9897   0.000   0.0000  0.000  0.0000   0.9897
+   48  Quel est le chiffre d'affaires t   0.8727   0.000   0.0000  0.000  0.0000   0.8727
+   49  TestDB_DataWarehouse               0.5701   0.000   0.0000  0.000  0.0000   0.5701
+
+  Lecture pour régler les hyperparamètres :
+  - Sim(t) domine et écrase les autres termes -> baisser α et/ou β,
+    ou vérifier que payload['columns'] est bien peuplé (sinon Sim(t)
+    retombe sur un repli à 1 seul champ, moins discriminant).
+  - Un candidat pertinent classé bas malgré un bon Embed(t) -> monter α.
+  - Heat(t) fait remonter des tables populaires mais hors-sujet -> baisser β.
+
+── ÉTAPE 7 — CLASSEMENT FINAL (méthode active) ──
+
+  16 entrées retenues (fine_k=16) :
+     1. Task Quels fournisseurs ont livre en moyenne moins de 90% des quantites commandees, sur plus de 5 commandes ?
+     2. colonne FACT_Commande_Client.Quantite_Commandee (DECIMAL(18, 2))
+     3. TABLE FACT_Commande_Client
+     4. colonne FACT_Commande_Client.Total_Quantite_Livree (DECIMAL(18, 2))
+     5. Task Quelles lignes de commande ont un ecart entre quantite commandee et quantite livree ?
+     6. Task Quel est le delai moyen en jours entre commande et reception fournisseur ?
+     7. Task Quelle est la quantite totale commandee par client d'apres l'agregat de commandes ?
+     8. Term Commande client
+     9. TABLE FACT_Ordre_Achat
+    10. colonne FACT_Commande_Client.Max_Date_Livraison (DATETIME)
+    11. Term Ordre d'achat
+    12. Task Quels sont les motifs de retour fournisseur existants ?
+    13. Task Quels sont les 5 articles les plus vendus en chiffre d'affaires ?
+    14. TABLE DIM_Fournisseur
+    15. Task Quelles commandes n'ont jamais ete livrees ?
+    16. Task Quel est le nombre de receptions par fournisseur et leur quantite totale recue ?
+
+── SYNTHÈSE : tables & colonnes comprises au final ──
+  Tables  : ['DIM_Fournisseur', 'FACT_Commande_Client', 'FACT_Ordre_Achat']
+  Colonnes: ['FACT_Commande_Client.Max_Date_Livraison', 'FACT_Commande_Client.Quantite_Commandee', 'FACT_Commande_Client.Total_Quantite_Livree']

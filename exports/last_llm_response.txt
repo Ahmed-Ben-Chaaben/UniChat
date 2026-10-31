@@ -1,0 +1,29 @@
+```sql
+WITH LatestInvoices AS (
+    SELECT 
+        Code_Client,
+        Num_Facture,
+        Date_Echeance AS Max_Date_Echeche_Ligne,
+        ROW_NUMBER() OVER (PARTITION BY Code_Client ORDER BY Date_Echeance DESC) AS rn
+    FROM FACT_Vente
+
+
+
+    UNION ALL
+
+    SELECT 
+        Code_Client,
+        NULL AS Num_Facture,
+        NULL AS Max_Date_Echeche_Ligne,
+                             0 AS rn
+    FROM DIM_Client
+)
+SELECT 
+    l1.Code_Client,
+    l1.Num_Facture AS Facture_RecentRecente,
+    l2.Max_Date_Echeche_Ligne AS Date_Echeance_Precedente,
+    DATEDIFF(day, l2.Max_Date_Date_Echeche_Ligne, l1.Date_Echeance) AS Ecart_Jours
+FROM LatestInvoices l1
+LEFT JOIN LatestInvoicesvoices l2 ON l1.Code_Client = l2.Code_Client AND l1.rn = 2 AND l2.rn = 1
+ORDER BY BY l1.Code_Client;
+```
